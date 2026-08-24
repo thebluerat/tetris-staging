@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="./style.css">
+	<title>Document</title>
+</head>
+<body>
+	<section id="start_screen" class="active">start</section>
+	<section id="playing_screen">playing
+		<canvas id="board_canvas" width="200" height="400"></canvas>
+	</section>
+	<section id="paused_screen">paused</section>
+	<section id="gameover_screen">gameover</section>
+	<script src="./state.js"></script>
+	<script src="./renderer.js"></script>
+	<script src="./board.js"></script>
+	<script src="./piece.js"></script>
+</body>
+</html>
