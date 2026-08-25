@@ -10,31 +10,6 @@ const PIECES = {
 
 const piece_size = [4, 4];
 
-let initLocation = {
-    piece: "",
-    direction: 0,
-    top: 0,
-    left: 3,
-};
-
-function spawnPiece() {
-    const newPiece = createRandomPiece();
-    initLocation.piece = newPiece;
-    initLocation.top = 0;
-    initLocation.left = 3;
-    initLocation.direction = 0;
-};
-function createRandomPiece() {
-    const piecesKeys = Object.keys(PIECES);
-    const randomIndex = Math.floor(Math.random() * piecesKeys.length);
-    return {
-        blockName: Object.keys(PIECES)[randomIndex],
-        cells: PIECES[piecesKeys[randomIndex]]['cells'],
-        color: PIECES[piecesKeys[randomIndex]]['color'],
-    };
-}
-
-spawnPiece();
 
 // 피스 큐 currentPiece, nextQueue
 class Queue {
@@ -48,3 +23,37 @@ class Queue {
         return this.queue.shift();
     }
 }
+
+const q = new Queue();
+
+function initQueue() {
+    q.enqueue(createRandomPiece());
+    q.enqueue(createRandomPiece());
+}
+
+initQueue();
+
+let currentPiece = "";
+
+function spawnPiece() {
+    const newPiece = q.dequeue();
+    currentPiece = {
+      ...newPiece,
+      top: 0,
+      left: 3,
+      direction: 0,  
+    };
+    q.enqueue(createRandomPiece());
+};
+
+function createRandomPiece() {
+    const piecesKeys = Object.keys(PIECES);
+    const randomIndex = Math.floor(Math.random() * piecesKeys.length);
+    return {
+        blockName: Object.keys(PIECES)[randomIndex],
+        cells: PIECES[piecesKeys[randomIndex]]['cells'],
+        color: PIECES[piecesKeys[randomIndex]]['color'],
+    };
+}
+
+spawnPiece();
