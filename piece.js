@@ -46,6 +46,14 @@ function spawnPiece() {
     q.enqueue(createRandomPiece());
 };
 
+function cellsAbsolutePosition(piece) {
+    return piece.cells.map((cell) => {
+        const col = cell[0];
+        const row = cell[1];
+        return [col + piece.left, row + piece.top];
+    });
+};
+
 function createRandomPiece() {
     const piecesKeys = Object.keys(PIECES);
     const randomIndex = Math.floor(Math.random() * piecesKeys.length);
