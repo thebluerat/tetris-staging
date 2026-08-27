@@ -5,3 +5,10 @@
 - 회전
 - 소프트 드롭
 - 하드 드롭
+
+[js 파일]
+- state.js: 화면 전환 관리 (START, PLAYING, PAUSED, GAMEOVER)
+- board.js: 게임이 진행되는 보드 관리. grid 생성.
+- piece.js: 블록 관리. pieces 모양, 랜덤 블록 생성, 좌표 계산, 큐에 쌓기, 스폰하기
+- renderer.js: 그리기. drawCell(한 칸 칠하는 기능), drawGrid(보드 배열 중 차 있는 칸 있을 때 drawCell 호출), drawPiece(블록 배열 중 차 있는 칸 있을 때 drawCell 호출)
+- main.js: 전체 기능 연결
