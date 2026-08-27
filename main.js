@@ -36,10 +36,28 @@ draw();
 
 window.addEventListener('keydown', (event) => {
     switch (event.code) {
-        case "ArrowLeft": currentPiece.left --;
-            break;
-        case "ArrowRight": currentPiece.left ++;
-            break;
+        case "ArrowLeft": 
+            // currentPiece.left - 1한 값 새로 만들어보기
+            const checkingPiece = {
+                ...currentPiece,
+                left: currentPiece.left - 1
+            };
+            // currentPiece.left - 1하면 어떻게 될지 좌표 계산해보기
+            const checkingCells = cellsAbsolutePosition(checkingPiece);
+            if(isValidPosition(checkingCells)){
+                currentPiece.left --;
+            }
+        break;
+        case "ArrowRight":
+            const checkingPieceR = {
+                ...currentPiece,
+                left: currentPiece.left + 1
+            };
+            const checkingCellsR = cellsAbsolutePosition(checkingPieceR);
+            if(isValidPosition(checkingCellsR)){
+                currentPiece.left ++;
+            }
+        break;
     }
     draw();
 })

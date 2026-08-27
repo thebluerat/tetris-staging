@@ -10,7 +10,6 @@ const PIECES = {
 
 const piece_size = [4, 4];
 
-
 // 피스 큐 currentPiece, nextQueue
 class Queue {
     constructor() {
@@ -46,6 +45,7 @@ function spawnPiece() {
     q.enqueue(createRandomPiece());
 };
 
+// 블록 위치 좌표 계산
 function cellsAbsolutePosition(piece) {
     return piece.cells.map((cell) => {
         const col = cell[0];
@@ -53,6 +53,11 @@ function cellsAbsolutePosition(piece) {
         return [col + piece.left, row + piece.top];
     });
 };
+
+function isValidPosition(checkingCells) {
+    const checkColValues = checkingCells.every(x => x[0] >= 0 && x[0] < 10);
+    return checkColValues; 
+}
 
 function createRandomPiece() {
     const piecesKeys = Object.keys(PIECES);
