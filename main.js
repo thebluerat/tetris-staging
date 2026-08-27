@@ -33,3 +33,13 @@ function draw() {
 }
 
 draw();
+
+window.addEventListener('keydown', (event) => {
+    switch (event.code) {
+        case "ArrowLeft": currentPiece.left --;
+            break;
+        case "ArrowRight": currentPiece.left ++;
+            break;
+    }
+    draw();
+})
