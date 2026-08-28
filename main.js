@@ -34,6 +34,10 @@ function draw() {
 
 draw();
 
+let movingTimer = null;
+
+
+
 window.addEventListener('keydown', (event) => {
     switch (event.code) {
         case "ArrowLeft": 
@@ -58,26 +62,29 @@ window.addEventListener('keydown', (event) => {
                 currentPiece.left ++;
             }
         break;
-        case "ArrowUp":
-            const checkingPieceU = {
-                ...currentPiece,
-                top: currentPiece.top - 1
-            };
-            const chekingCellsU = cellsAbsolutePosition(checkingPieceU);
-            if(isValidPosition(chekingCellsU)) {
-                currentPiece.top --;
-            }
-        break;
         case "ArrowDown":
-            const checkingPieceD = {
-                ...currentPiece,
-                top: currentPiece.top + 1
-            };
-            const chekingCellsD = cellsAbsolutePosition(checkingPieceD);
-            if(isValidPosition(chekingCellsD)) {
-                currentPiece.top ++;
-            }
-        break;
+            if(movingTimer !== null) return;
+            movingTimer = setInterval(() => {
+                const checkingPieceD = {
+                    ...currentPiece,
+                    top: currentPiece.top + 1
+                };
+                const chekingCellsD = cellsAbsolutePosition(checkingPieceD);
+                if(isValidPosition(chekingCellsD)) {
+                    currentPiece.top ++;
+                }
+                // console.log('누름' + ' event.key: ' + event.key);
+                draw();
+            }, 30)
+        break; 
+    }
+    draw();
+})
+window.addEventListener('keyup', (event) => {
+    if(event.key == "ArrowDown") {
+        clearInterval(movingTimer);
+        movingTimer = null;
+        // console.log('뗌' + ' event.key: ' + event.key);
     }
     draw();
 })
