@@ -38,13 +38,13 @@ window.addEventListener('keydown', (event) => {
     switch (event.code) {
         case "ArrowLeft": 
             // currentPiece.left - 1한 값 새로 만들어보기
-            const checkingPiece = {
+            const checkingPieceL = {
                 ...currentPiece,
                 left: currentPiece.left - 1
             };
             // currentPiece.left - 1하면 어떻게 될지 좌표 계산해보기
-            const checkingCells = cellsAbsolutePosition(checkingPiece);
-            if(isValidPosition(checkingCells)){
+            const checkingCellsL = cellsAbsolutePosition(checkingPieceL);
+            if(isValidPosition(checkingCellsL)){
                 currentPiece.left --;
             }
         break;
@@ -56,6 +56,26 @@ window.addEventListener('keydown', (event) => {
             const checkingCellsR = cellsAbsolutePosition(checkingPieceR);
             if(isValidPosition(checkingCellsR)){
                 currentPiece.left ++;
+            }
+        break;
+        case "ArrowUp":
+            const checkingPieceU = {
+                ...currentPiece,
+                top: currentPiece.top - 1
+            };
+            const chekingCellsU = cellsAbsolutePosition(checkingPieceU);
+            if(isValidPosition(chekingCellsU)) {
+                currentPiece.top --;
+            }
+        break;
+        case "ArrowDown":
+            const checkingPieceD = {
+                ...currentPiece,
+                top: currentPiece.top + 1
+            };
+            const chekingCellsD = cellsAbsolutePosition(checkingPieceD);
+            if(isValidPosition(chekingCellsD)) {
+                currentPiece.top ++;
             }
         break;
     }

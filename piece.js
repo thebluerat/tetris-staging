@@ -56,7 +56,8 @@ function cellsAbsolutePosition(piece) {
 
 function isValidPosition(checkingCells) {
     const checkColValues = checkingCells.every(x => x[0] >= 0 && x[0] < 10);
-    return checkColValues; 
+    const checkRowValues = checkingCells.every(y => y[1] >= 0 && y[1] < 20);
+    return checkColValues && checkRowValues; 
 }
 
 function createRandomPiece() {
