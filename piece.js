@@ -55,6 +55,20 @@ const RotatedShapes = {
 };
 const rotationOrder = ['north', 'east', 'south', 'west'];
 
+// 벽차기: 어느 방향으로 얼마나 밀지 (공식 SRS 킥 테이블 참고)
+const WallKicks_JLSTZ = {
+    north: [[0,0], [-1,0], [-1,-1], [0,2], [-1,2]],   // north → east
+    east:  [[0,0], [1,0],  [1,1],   [0,-2], [1,-2]],  // east → south
+    south: [[0,0], [1,0],  [1,-1],  [0,2], [1,2]],    // south → west
+    west:  [[0,0], [-1,0], [-1,1],  [0,-2], [-1,-2]], // west → north
+};
+const WallKicks_I = {
+    north: [[0,0], [-2,0], [1,0], [-2,1], [1,-2]],
+    east:  [[0,0], [-1,0], [2,0], [-1,-2], [2,1]],
+    south: [[0,0], [2,0],  [-1,0], [2,-1], [-1,2]],
+    west:  [[0,0], [1,0],  [-2,0], [1,2], [-2,-1]],
+};
+
 const piece_size = [4, 4];
 
 // 피스 큐 currentPiece, nextQueue

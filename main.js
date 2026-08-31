@@ -73,27 +73,45 @@ window.addEventListener('keydown', (event) => {
                 if(isValidPosition(chekingCellsD)) {
                     currentPiece.top = checkingPieceD.top;
                 }
-                // console.log('누름' + ' event.key: ' + event.key);
                 draw();
             }, 30)
         break; 
         case "ArrowUp":
             const rotationLength = rotationOrder.length;
             const nextDirection = rotationOrder[(rotationOrder.indexOf(currentPiece.direction) + 1) % rotationLength];
+
             const checkingPieceU = {
                 ...currentPiece,
                 direction: nextDirection,
                 cells: RotatedShapes[currentPiece.blockName][nextDirection],
             }
             const checkingCellsU = cellsAbsolutePosition(checkingPieceU);
+            console.log('회전 시 예상 셀 값: ', checkingCellsU);
             if(isValidPosition(checkingCellsU)){
                 currentPiece.direction = nextDirection;
-
-                // currentPiece.cells에 RotatedShapes의 currentPiece.blockName과 같은 배열의 currentPiece.direction 값을 넣어줘야 함
                 currentPiece.cells = checkingPieceU.cells;
-            }
+            } 
+            
+            // 회전 벽에 막힐 때 벽차기
+            else {
+                let kickTable = WallKicks_JLSTZ;
+                if(checkingPieceU.blockName == 'I') {
+                    kickTable = WallKicks_I;
+                }
+                for (let i = 0; i < 5; i++) {
+                    const [deltaLeft, deltaTop] = kickTable[currentPiece.direction][i];
+                    const kickedCells = checkingCellsU.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
+                    
+                    if (isValidPosition(kickedCells)) {
+                        currentPiece.cells = checkingPieceU.cells;
+                        currentPiece.direction = nextDirection;
+                        currentPiece.left = currentPiece.left + deltaLeft;
+                        currentPiece.top = currentPiece.top + deltaTop;
+                        break;
+                    }
+                }
+            };
             draw();
-            console.log('위 방향키 누름 ' + currentPiece.direction);
         break;
     }
     draw();
@@ -102,7 +120,6 @@ window.addEventListener('keyup', (event) => {
     if(event.key == "ArrowDown") {
         clearInterval(movingTimer);
         movingTimer = null;
-        // console.log('뗌' + ' event.key: ' + event.key);
     }
     draw();
 })
