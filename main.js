@@ -49,7 +49,7 @@ window.addEventListener('keydown', (event) => {
             // currentPiece.left - 1하면 어떻게 될지 좌표 계산해보기
             const checkingCellsL = cellsAbsolutePosition(checkingPieceL);
             if(isValidPosition(checkingCellsL)){
-                currentPiece.left --;
+                currentPiece.left = checkingPieceL.left;
             }
         break;
         case "ArrowRight":
@@ -59,7 +59,7 @@ window.addEventListener('keydown', (event) => {
             };
             const checkingCellsR = cellsAbsolutePosition(checkingPieceR);
             if(isValidPosition(checkingCellsR)){
-                currentPiece.left ++;
+                currentPiece.left = checkingPieceR.left;
             }
         break;
         case "ArrowDown":
@@ -71,12 +71,30 @@ window.addEventListener('keydown', (event) => {
                 };
                 const chekingCellsD = cellsAbsolutePosition(checkingPieceD);
                 if(isValidPosition(chekingCellsD)) {
-                    currentPiece.top ++;
+                    currentPiece.top = checkingPieceD.top;
                 }
                 // console.log('누름' + ' event.key: ' + event.key);
                 draw();
             }, 30)
         break; 
+        case "ArrowUp":
+            const rotationLength = rotationOrder.length;
+            const nextDirection = rotationOrder[(rotationOrder.indexOf(currentPiece.direction) + 1) % rotationLength];
+            const checkingPieceU = {
+                ...currentPiece,
+                direction: nextDirection,
+                cells: RotatedShapes[currentPiece.blockName][nextDirection],
+            }
+            const checkingCellsU = cellsAbsolutePosition(checkingPieceU);
+            if(isValidPosition(checkingCellsU)){
+                currentPiece.direction = nextDirection;
+
+                // currentPiece.cells에 RotatedShapes의 currentPiece.blockName과 같은 배열의 currentPiece.direction 값을 넣어줘야 함
+                currentPiece.cells = checkingPieceU.cells;
+            }
+            draw();
+            console.log('위 방향키 누름 ' + currentPiece.direction);
+        break;
     }
     draw();
 })

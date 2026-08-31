@@ -53,6 +53,7 @@ const RotatedShapes = {
         west:  [[2,0], [0,1], [1,1], [2,1]],
     },
 };
+const rotationOrder = ['north', 'east', 'south', 'west'];
 
 const piece_size = [4, 4];
 
@@ -86,7 +87,7 @@ function spawnPiece() {
       ...newPiece,
       top: 0,
       left: 3,
-      direction: 0,  
+      direction: 'north',  
     };
     q.enqueue(createRandomPiece());
 };
@@ -105,6 +106,10 @@ function isValidPosition(checkingCells) {
     const checkRowValues = checkingCells.every(y => y[1] >= 0 && y[1] < 20);
     return checkColValues && checkRowValues; 
 }
+
+function rotatePiece() {
+    
+};
 
 function createRandomPiece() {
     const piecesKeys = Object.keys(PIECES);
