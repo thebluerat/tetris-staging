@@ -35,8 +35,7 @@ function draw() {
 draw();
 
 let movingTimer = null;
-
-
+const rotationLength = rotationOrder.length;
 
 window.addEventListener('keydown', (event) => {
     switch (event.code) {
@@ -76,35 +75,71 @@ window.addEventListener('keydown', (event) => {
                 draw();
             }, 30)
         break; 
-        case "ArrowUp":
-            const rotationLength = rotationOrder.length;
+        case "KeyX":
+            console.log('KeyX 회전 시도 직전 direction: ', currentPiece.direction);
             const nextDirection = rotationOrder[(rotationOrder.indexOf(currentPiece.direction) + 1) % rotationLength];
-
-            const checkingPieceU = {
+            const checkingPieceCW = {
                 ...currentPiece,
                 direction: nextDirection,
                 cells: RotatedShapes[currentPiece.blockName][nextDirection],
             }
-            const checkingCellsU = cellsAbsolutePosition(checkingPieceU);
-            console.log('회전 시 예상 셀 값: ', checkingCellsU);
-            if(isValidPosition(checkingCellsU)){
+            const checkingCellsCW = cellsAbsolutePosition(checkingPieceCW);
+
+            if(isValidPosition(checkingCellsCW)){
                 currentPiece.direction = nextDirection;
-                currentPiece.cells = checkingPieceU.cells;
+                currentPiece.cells = checkingPieceCW.cells;
             } 
-            
             // 회전 벽에 막힐 때 벽차기
             else {
                 let kickTable = WallKicks_JLSTZ;
-                if(checkingPieceU.blockName == 'I') {
+                if(checkingPieceCW.blockName == 'I') {
                     kickTable = WallKicks_I;
                 }
                 for (let i = 0; i < 5; i++) {
                     const [deltaLeft, deltaTop] = kickTable[currentPiece.direction][i];
-                    const kickedCells = checkingCellsU.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
+                    const kickedCells = checkingCellsCW.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
                     
                     if (isValidPosition(kickedCells)) {
-                        currentPiece.cells = checkingPieceU.cells;
+                        currentPiece.cells = checkingPieceCW.cells;
                         currentPiece.direction = nextDirection;
+                        currentPiece.left = currentPiece.left + deltaLeft;
+                        currentPiece.top = currentPiece.top + deltaTop;
+                        break;
+                    }
+                }
+            };
+            draw();
+        break;
+        case "KeyZ":
+            console.log('KeyZ 회전 시도 직전 direction: ', currentPiece.direction);
+            console.log('현재 left/top: ', currentPiece.left, currentPiece.top);
+            const ACWnextDirection = rotationOrder[((rotationOrder.indexOf(currentPiece.direction) - 1) % rotationLength + 4) % 4];
+            let checkingPieceACW = {
+                ...currentPiece,
+                direction: ACWnextDirection,
+                cells: RotatedShapes[currentPiece.blockName][ACWnextDirection],
+            }
+            checkingCellsACW = cellsAbsolutePosition(checkingPieceACW);
+            console.log('기본 회전 시도 좌표: ', checkingCellsACW); 
+
+            if(isValidPosition(checkingCellsACW)){
+                currentPiece.direction = ACWnextDirection;
+                currentPiece.cells = checkingPieceACW.cells;
+            } 
+            // 회전 벽에 막힐 때 벽차기
+            else {
+                let kickTable = WallKicks_JLSTZ_ACW;
+                if(checkingPieceACW.blockName == 'I') {
+                    kickTable = WallKicks_I_ACW;
+                }
+                for (let i = 0; i < 5; i++) {
+                    const [deltaLeft, deltaTop] = kickTable[currentPiece.direction][i];
+                    const kickedCells = checkingCellsACW.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
+                    console.log(`킥 시도 ${i}:`, kickedCells); 
+                    
+                    if (isValidPosition(kickedCells)) {
+                        currentPiece.cells = checkingPieceACW.cells;
+                        currentPiece.direction = ACWnextDirection;
                         currentPiece.left = currentPiece.left + deltaLeft;
                         currentPiece.top = currentPiece.top + deltaTop;
                         break;
