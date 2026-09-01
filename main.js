@@ -11,6 +11,8 @@ const subPreviewCanvas = document.getElementById('sub_next_preview');
 const subPreviewCellSize = 5;
 const subPreviewRenderer = new Renderer(subPreviewCanvas, subPreviewCellSize);
 
+showScreen(SCREEN_STATE.START);
+
 function draw() {
     renderer.clear();
     renderer.drawGrid(grid);
@@ -43,6 +45,7 @@ let dropTimeCounter = 0;
 let dropInterval = 1000;
 
 // state - PAUSED일 때, 블록이 바닥에 닿았을 때 멈춰야 함
+
 function dropTimeUpdate(time = 0) {
     const deltaTime = time - lastDropTime;
     lastDropTime = time;
@@ -59,9 +62,10 @@ function dropTimeUpdate(time = 0) {
     requestAnimationFrame(dropTimeUpdate);
 };
 
-requestAnimationFrame(dropTimeUpdate);
-
 function moveDown() {
+    if(state === SCREEN_STATE.PAUSED) {
+        return;
+    }
     const checkingPieceD = {
         ...currentPiece,
         top: currentPiece.top + 1

@@ -42,6 +42,10 @@ function showScreen(newState) {
 };
 
 window.addEventListener('keydown', (event) => {
+    if(state === SCREEN_STATE.START) {
+        showScreen(SCREEN_STATE.PLAYING);
+        requestAnimationFrame(dropTimeUpdate);
+    }
     switch (event.code) {
         case "Escape":
             if(state === SCREEN_STATE.PLAYING) {
@@ -49,6 +53,7 @@ window.addEventListener('keydown', (event) => {
             } else if (state === SCREEN_STATE.PAUSED) {
                 showScreen(SCREEN_STATE.PLAYING);
             }
+            console.log('esc 누름: ', state);
         break;
     }
 })
