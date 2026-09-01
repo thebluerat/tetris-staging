@@ -44,6 +44,7 @@ function showScreen(newState) {
 window.addEventListener('keydown', (event) => {
     if(state === SCREEN_STATE.START) {
         showScreen(SCREEN_STATE.PLAYING);
+        lastDropTime = document.timeline.currentTime;
         requestAnimationFrame(dropTimeUpdate);
     }
     switch (event.code) {
