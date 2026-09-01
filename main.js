@@ -70,9 +70,16 @@ function moveDown() {
         ...currentPiece,
         top: currentPiece.top + 1
     };
-    const chekingCellsD = cellsAbsolutePosition(checkingPieceD);
-    if(isValidPosition(chekingCellsD)) {
+    const checkingCellsD = cellsAbsolutePosition(checkingPieceD);
+    if(isValidPosition(checkingCellsD) && isEmptySpace(checkingCellsD, grid)) {
         currentPiece.top = checkingPieceD.top;
+    } else {
+        currentPiece.top = currentPiece.top;
+        const position = cellsAbsolutePosition(currentPiece);
+        position.forEach(([col, row]) => {
+            grid[row][col] = currentPiece.color;
+        })
+        spawnPiece();
     }
 }
 

@@ -6,3 +6,7 @@ const createEmptyGrid = () => {
     return board;
 };
 const grid = createEmptyGrid();
+
+function isEmptySpace(checkingCells, grid) {
+    return checkingCells.every(([col, row]) => grid[row][col] === null);
+};
