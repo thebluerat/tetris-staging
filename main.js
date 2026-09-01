@@ -93,7 +93,7 @@ window.addEventListener('keydown', (event) => {
             };
             // currentPiece.left - 1하면 어떻게 될지 좌표 계산해보기
             const checkingCellsL = cellsAbsolutePosition(checkingPieceL);
-            if(isValidPosition(checkingCellsL)){
+            if(isValidPosition(checkingCellsL) && isEmptySpace(checkingCellsL, grid)){
                 currentPiece.left = checkingPieceL.left;
             }
         break;
@@ -103,7 +103,7 @@ window.addEventListener('keydown', (event) => {
                 left: currentPiece.left + 1
             };
             const checkingCellsR = cellsAbsolutePosition(checkingPieceR);
-            if(isValidPosition(checkingCellsR)){
+            if(isValidPosition(checkingCellsR) && isEmptySpace(checkingCellsR, grid)){
                 currentPiece.left = checkingPieceR.left;
             }
         break;
@@ -116,7 +116,6 @@ window.addEventListener('keydown', (event) => {
             }, 30)
         break; 
         case "KeyX":
-            console.log('KeyX 회전 시도 직전 direction: ', currentPiece.direction);
             const nextDirection = rotationOrder[(rotationOrder.indexOf(currentPiece.direction) + 1) % rotationLength];
             const checkingPieceCW = {
                 ...currentPiece,
@@ -125,7 +124,7 @@ window.addEventListener('keydown', (event) => {
             }
             const checkingCellsCW = cellsAbsolutePosition(checkingPieceCW);
 
-            if(isValidPosition(checkingCellsCW)){
+            if(isValidPosition(checkingCellsCW) && isEmptySpace(checkingCellsCW, grid)){
                 currentPiece.direction = nextDirection;
                 currentPiece.cells = checkingPieceCW.cells;
             } 
@@ -139,7 +138,7 @@ window.addEventListener('keydown', (event) => {
                     const [deltaLeft, deltaTop] = kickTable[currentPiece.direction][i];
                     const kickedCells = checkingCellsCW.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
                     
-                    if (isValidPosition(kickedCells)) {
+                    if (isValidPosition(kickedCells) && isEmptySpace(kickedCells, grid)) {
                         currentPiece.cells = checkingPieceCW.cells;
                         currentPiece.direction = nextDirection;
                         currentPiece.left = currentPiece.left + deltaLeft;
@@ -151,18 +150,15 @@ window.addEventListener('keydown', (event) => {
             draw();
         break;
         case "KeyZ":
-            console.log('KeyZ 회전 시도 직전 direction: ', currentPiece.direction);
-            console.log('현재 left/top: ', currentPiece.left, currentPiece.top);
             const ACWnextDirection = rotationOrder[((rotationOrder.indexOf(currentPiece.direction) - 1) % rotationLength + 4) % 4];
             let checkingPieceACW = {
                 ...currentPiece,
                 direction: ACWnextDirection,
                 cells: RotatedShapes[currentPiece.blockName][ACWnextDirection],
             }
-            checkingCellsACW = cellsAbsolutePosition(checkingPieceACW);
-            console.log('기본 회전 시도 좌표: ', checkingCellsACW); 
+            const checkingCellsACW = cellsAbsolutePosition(checkingPieceACW);
 
-            if(isValidPosition(checkingCellsACW)){
+            if(isValidPosition(checkingCellsACW) && isEmptySpace(checkingCellsACW, grid)){
                 currentPiece.direction = ACWnextDirection;
                 currentPiece.cells = checkingPieceACW.cells;
             } 
@@ -175,9 +171,8 @@ window.addEventListener('keydown', (event) => {
                 for (let i = 0; i < 5; i++) {
                     const [deltaLeft, deltaTop] = kickTable[currentPiece.direction][i];
                     const kickedCells = checkingCellsACW.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
-                    console.log(`킥 시도 ${i}:`, kickedCells); 
                     
-                    if (isValidPosition(kickedCells)) {
+                    if (isValidPosition(kickedCells) && isEmptySpace(kickedCells, grid)) {
                         currentPiece.cells = checkingPieceACW.cells;
                         currentPiece.direction = ACWnextDirection;
                         currentPiece.left = currentPiece.left + deltaLeft;
