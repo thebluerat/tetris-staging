@@ -37,6 +37,41 @@ draw();
 let movingTimer = null;
 const rotationLength = rotationOrder.length;
 
+// 자동 낙하에 필요한 변수
+let lastDropTime = 0;
+let dropTimeCounter = 0;
+let dropInterval = 1000;
+
+// state - PAUSED일 때, 블록이 바닥에 닿았을 때 멈춰야 함
+function dropTimeUpdate(time = 0) {
+    const deltaTime = time - lastDropTime;
+    lastDropTime = time;
+    dropTimeCounter += deltaTime;
+
+    if(dropTimeCounter > dropInterval) {
+        moveDown();
+        dropTimeCounter = 0;
+    }
+    // console.log('lastDropTime: ', lastDropTime);
+    // console.log('dropTimeCounter: ', dropTimeCounter);
+    // console.log('dropInterval: ', dropInterval);
+    draw();
+    requestAnimationFrame(dropTimeUpdate);
+};
+
+requestAnimationFrame(dropTimeUpdate);
+
+function moveDown() {
+    const checkingPieceD = {
+        ...currentPiece,
+        top: currentPiece.top + 1
+    };
+    const chekingCellsD = cellsAbsolutePosition(checkingPieceD);
+    if(isValidPosition(chekingCellsD)) {
+        currentPiece.top = checkingPieceD.top;
+    }
+}
+
 window.addEventListener('keydown', (event) => {
     switch (event.code) {
         case "ArrowLeft": 
@@ -64,14 +99,8 @@ window.addEventListener('keydown', (event) => {
         case "ArrowDown":
             if(movingTimer !== null) return;
             movingTimer = setInterval(() => {
-                const checkingPieceD = {
-                    ...currentPiece,
-                    top: currentPiece.top + 1
-                };
-                const chekingCellsD = cellsAbsolutePosition(checkingPieceD);
-                if(isValidPosition(chekingCellsD)) {
-                    currentPiece.top = checkingPieceD.top;
-                }
+                moveDown()
+                dropTimeCounter = 0;
                 draw();
             }, 30)
         break; 
