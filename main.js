@@ -60,6 +60,13 @@ function dropTimeUpdate(time = 0) {
     requestAnimationFrame(dropTimeUpdate);
 };
 
+// 블록 고정 함수 (moveDown(), hardDrop() 공통)
+function lockPiece(position, currentPiece) {
+    position.forEach(([col, row]) => {
+        grid[row][col] = currentPiece.color;
+    })       
+}
+
 function moveDown() {
     if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
     const checkingPieceD = {
@@ -78,9 +85,8 @@ function moveDown() {
             return;
         }
         // 블록 고정
-        position.forEach(([col, row]) => {
-            grid[row][col] = currentPiece.color;
-        })       
+        lockPiece(position, currentPiece);   
+
         spawnPiece();
     }
 }
@@ -92,7 +98,6 @@ function hardDrop() {
     }
     let checkingCellsHardDrop = cellsAbsolutePosition(checkingPieceHardDrop);
     while(isValidPosition(checkingCellsHardDrop) && isEmptySpace(checkingCellsHardDrop, grid)) {
-        console.log('checkingPieceHardDrop: ', checkingPieceHardDrop);
         checkingPieceHardDrop.top += 1;
         checkingCellsHardDrop = cellsAbsolutePosition(checkingPieceHardDrop);
     }
@@ -100,9 +105,9 @@ function hardDrop() {
     currentPiece = checkingPieceHardDrop;
 
     const hardDropPosition = cellsAbsolutePosition(currentPiece);
-    hardDropPosition.forEach(([col, row]) => {
-        grid[row][col] = currentPiece.color;
-    })       
+    //블록 고정
+    lockPiece(hardDropPosition, currentPiece);
+     
     spawnPiece();
 }
 
