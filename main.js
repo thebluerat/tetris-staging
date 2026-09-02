@@ -61,7 +61,7 @@ function dropTimeUpdate(time = 0) {
 };
 
 function moveDown() {
-    if(state === SCREEN_STATE.PAUSED) {
+    if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) {
         return;
     }
     const checkingPieceD = {
@@ -81,6 +81,7 @@ function moveDown() {
 }
 
 window.addEventListener('keydown', (event) => {
+    if(state !== 'PLAYING') return; 
     switch (event.code) {
         case "ArrowLeft": 
             // currentPiece.left - 1한 값 새로 만들어보기
