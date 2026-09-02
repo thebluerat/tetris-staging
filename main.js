@@ -67,6 +67,13 @@ function lockPiece(position, currentPiece) {
     })       
 }
 
+// 줄 삭제 함수
+function clearRow(position) {
+    const set = new Set(position.map(([col, row]) => row));
+    const fullRows = [...set];
+    console.log('fullRows', fullRows);
+}
+
 function moveDown() {
     if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
     const checkingPieceD = {
@@ -79,6 +86,7 @@ function moveDown() {
     } else {
         // lock out 게임 오버
         const position = cellsAbsolutePosition(currentPiece);
+        console.log('position: ', position);
         if (position.every(cell => cell[1] < 20)) {
             showScreen(SCREEN_STATE.GAMEOVER);
             console.log("lock out 께임 오버");
@@ -86,7 +94,8 @@ function moveDown() {
         }
         // 블록 고정
         lockPiece(position, currentPiece);   
-
+        // 꽉 찬 줄 삭제
+        clearRow(position);
         spawnPiece();
     }
 }
@@ -107,7 +116,8 @@ function hardDrop() {
     const hardDropPosition = cellsAbsolutePosition(currentPiece);
     //블록 고정
     lockPiece(hardDropPosition, currentPiece);
-     
+     // 꽉 찬 줄 삭제
+    clearRow(hardDropPosition);
     spawnPiece();
 }
 
