@@ -61,9 +61,7 @@ function dropTimeUpdate(time = 0) {
 };
 
 function moveDown() {
-    if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) {
-        return;
-    }
+    if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
     const checkingPieceD = {
         ...currentPiece,
         top: currentPiece.top + 1
@@ -72,19 +70,40 @@ function moveDown() {
     if(isValidPosition(checkingCellsD) && isEmptySpace(checkingCellsD, grid)) {
         currentPiece.top = checkingPieceD.top;
     } else {
+        // lock out 게임 오버
         const position = cellsAbsolutePosition(currentPiece);
-        console.log('position: ', position);
-        console.log('cell[1]: ', position.map(cell => cell[1]));
         if (position.every(cell => cell[1] < 20)) {
             showScreen(SCREEN_STATE.GAMEOVER);
             console.log("lock out 께임 오버");
             return;
         }
+        // 블록 고정
         position.forEach(([col, row]) => {
             grid[row][col] = currentPiece.color;
         })       
         spawnPiece();
     }
+}
+function hardDrop() {
+    if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
+    let checkingPieceHardDrop = {
+        ...currentPiece,
+        top: currentPiece.top + 1
+    }
+    let checkingCellsHardDrop = cellsAbsolutePosition(checkingPieceHardDrop);
+    while(isValidPosition(checkingCellsHardDrop) && isEmptySpace(checkingCellsHardDrop, grid)) {
+        console.log('checkingPieceHardDrop: ', checkingPieceHardDrop);
+        checkingPieceHardDrop.top += 1;
+        checkingCellsHardDrop = cellsAbsolutePosition(checkingPieceHardDrop);
+    }
+    checkingPieceHardDrop.top -= 1;
+    currentPiece = checkingPieceHardDrop;
+
+    const hardDropPosition = cellsAbsolutePosition(currentPiece);
+    hardDropPosition.forEach(([col, row]) => {
+        grid[row][col] = currentPiece.color;
+    })       
+    spawnPiece();
 }
 
 window.addEventListener('keydown', (event) => {
@@ -188,15 +207,14 @@ window.addEventListener('keydown', (event) => {
             };
             draw();
         break;
-        // 하드드롭은 다음 차례!!
-        // case "Space":
-
-        // break;
+        case "Space":
+            hardDrop();
+        break;
     }
     draw();
 })
 window.addEventListener('keyup', (event) => {
-    if(event.key == "ArrowDown") {
+    if(event.key == "ArrowDown" || event.key == "Space") {
         clearInterval(movingTimer);
         movingTimer = null;
     }
