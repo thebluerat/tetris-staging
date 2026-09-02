@@ -111,7 +111,7 @@ function spawnPiece() {
     const newPiece = q.dequeue();
     currentPiece = {
         ...newPiece,
-        top: 0,
+        top: 18,
         left: 3,
         direction: 'north',  
     };
@@ -136,7 +136,7 @@ function cellsAbsolutePosition(piece) {
 
 function isValidPosition(checkingCells) {
     const checkColValues = checkingCells.every(x => x[0] >= 0 && x[0] < 10);
-    const checkRowValues = checkingCells.every(y => y[1] >= 0 && y[1] < 20);
+    const checkRowValues = checkingCells.every(y => y[1] >= 0 && y[1] < 40);
     return checkColValues && checkRowValues; 
 }
 

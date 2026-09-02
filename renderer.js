@@ -19,22 +19,24 @@ class Renderer {
         this.ctx.fillRect(x, y, this.cellSize, this.cellSize);
 
     }
-
+    
     drawGrid(grid) {
-        for(let row = 0; row < grid.length; row++) {
+        const excludeBufferZone = 20;
+        for(let row = 20; row < grid.length; row++) {
             for(let col = 0; col < grid[row].length; col++) {
                 if(grid[row][col] !== null) {
-                    this.drawCell(row, col, grid[row][col]);
+                    this.drawCell(row - excludeBufferZone, col, grid[row][col]);
                 }
             }
         }
     }
 
     drawPiece(piece) {
+        const excludeBufferZone = 20;
         for(const cell of piece.cells) {
             const col = cell[0];
             const row = cell[1];
-            this.drawCell(row, col, piece.color);
+            this.drawCell(row - excludeBufferZone, col, piece.color);
         }
     }
 
