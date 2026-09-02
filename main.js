@@ -73,6 +73,13 @@ function moveDown() {
         currentPiece.top = checkingPieceD.top;
     } else {
         const position = cellsAbsolutePosition(currentPiece);
+        console.log('position: ', position);
+        console.log('cell[1]: ', position.map(cell => cell[1]));
+        if (position.every(cell => cell[1] < 20)) {
+            showScreen(SCREEN_STATE.GAMEOVER);
+            console.log("lock out 께임 오버");
+            return;
+        }
         position.forEach(([col, row]) => {
             grid[row][col] = currentPiece.color;
         })       
