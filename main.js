@@ -14,6 +14,7 @@ const subPreviewRenderer = new Renderer(subPreviewCanvas, subPreviewCellSize);
 showScreen(SCREEN_STATE.START);
 
 function draw() {
+    if(state == 'START' || state == 'GAMEOVER') return;
     renderer.clear();
     renderer.drawGrid(grid);
     renderer.drawPiece({
@@ -44,20 +45,17 @@ let lastDropTime = 0;
 let dropTimeCounter = 0;
 let dropInterval = 1000;
 
-// state - PAUSED일 때, 블록이 바닥에 닿았을 때 멈춰야 함
-
 function dropTimeUpdate(time = 0) {
-    const deltaTime = time - lastDropTime;
-    lastDropTime = time;
-    dropTimeCounter += deltaTime;
-
-    if(dropTimeCounter > dropInterval) {
-        moveDown();
-        dropTimeCounter = 0;
+    if(state == 'PLAYING') {
+        const deltaTime = time - lastDropTime;
+        lastDropTime = time;
+        dropTimeCounter += deltaTime;
+        
+        if(dropTimeCounter > dropInterval) {
+            moveDown();
+            dropTimeCounter = 0;
+        }
     }
-    // console.log('lastDropTime: ', lastDropTime);
-    // console.log('dropTimeCounter: ', dropTimeCounter);
-    // console.log('dropInterval: ', dropInterval);
     draw();
     requestAnimationFrame(dropTimeUpdate);
 };
@@ -74,11 +72,10 @@ function moveDown() {
     if(isValidPosition(checkingCellsD) && isEmptySpace(checkingCellsD, grid)) {
         currentPiece.top = checkingPieceD.top;
     } else {
-        currentPiece.top = currentPiece.top;
         const position = cellsAbsolutePosition(currentPiece);
         position.forEach(([col, row]) => {
             grid[row][col] = currentPiece.color;
-        })
+        })       
         spawnPiece();
     }
 }
@@ -183,6 +180,10 @@ window.addEventListener('keydown', (event) => {
             };
             draw();
         break;
+        // 하드드롭은 다음 차례!!
+        // case "Space":
+
+        // break;
     }
     draw();
 })

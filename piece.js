@@ -110,12 +110,19 @@ let currentPiece = "";
 function spawnPiece() {
     const newPiece = q.dequeue();
     currentPiece = {
-      ...newPiece,
-      top: 0,
-      left: 3,
-      direction: 'north',  
+        ...newPiece,
+        top: 0,
+        left: 3,
+        direction: 'north',  
     };
-    q.enqueue(createRandomPiece());
+    const checkingCellsSpawn = cellsAbsolutePosition(currentPiece);
+    if(isEmptySpace(checkingCellsSpawn, grid)) {
+        q.enqueue(createRandomPiece());
+    } else {
+        showScreen(SCREEN_STATE.GAMEOVER);
+        console.log("께임 오버");
+        return;
+    }
 };
 
 // 블록 위치 좌표 계산

@@ -53,6 +53,7 @@ window.addEventListener('keydown', (event) => {
                 showScreen(SCREEN_STATE.PAUSED);
             } else if (state === SCREEN_STATE.PAUSED) {
                 showScreen(SCREEN_STATE.PLAYING);
+                lastDropTime = document.timeline.currentTime;
             }
             console.log('esc 누름: ', state);
         break;
