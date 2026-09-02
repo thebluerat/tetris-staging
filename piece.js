@@ -140,10 +140,6 @@ function isValidPosition(checkingCells) {
     return checkColValues && checkRowValues; 
 }
 
-function rotatePiece() {
-    
-};
-
 function createRandomPiece() {
     const piecesKeys = Object.keys(PIECES);
     const randomIndex = Math.floor(Math.random() * piecesKeys.length);
