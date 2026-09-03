@@ -70,8 +70,20 @@ function lockPiece(position, currentPiece) {
 // 줄 삭제 함수
 function clearRow(position) {
     const set = new Set(position.map(([col, row]) => row));
-    const fullRows = [...set];
-    console.log('fullRows', fullRows);
+    const setRows = [...set];
+    console.log('setRows', setRows);
+    const filteredGrid = grid.filter(row => row.some(cell => cell == null));
+    // console.log('filteredGrid: ', filteredGrid);
+    if (filteredGrid.length == grid.length) {
+        return;
+    } else {
+        const newRows = Array.from({length: (grid.length - filteredGrid.length)}, () => Array(cols).fill(null));
+        console.log('새 행: ', newRows);
+        const newGrid = [...newRows, ...filteredGrid];
+        console.log('newGrid: ', newGrid);
+        grid.length = 0;
+        grid.push(...newGrid);
+    }
 }
 
 function moveDown() {
