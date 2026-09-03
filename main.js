@@ -69,18 +69,15 @@ function lockPiece(position, currentPiece) {
 
 // 줄 삭제 함수
 function clearRow(position) {
+    // set: 블록이 고정된 행
     const set = new Set(position.map(([col, row]) => row));
-    const setRows = [...set];
-    console.log('setRows', setRows);
-    const filteredGrid = grid.filter(row => row.some(cell => cell == null));
-    // console.log('filteredGrid: ', filteredGrid);
+    // filteredGrid: 꽉 찬 행을 지운 grid
+    const filteredGrid = grid.filter((row, idx) => !set.has(idx) || row.some(cell => cell == null));
     if (filteredGrid.length == grid.length) {
         return;
     } else {
         const newRows = Array.from({length: (grid.length - filteredGrid.length)}, () => Array(cols).fill(null));
-        console.log('새 행: ', newRows);
         const newGrid = [...newRows, ...filteredGrid];
-        console.log('newGrid: ', newGrid);
         grid.length = 0;
         grid.push(...newGrid);
     }
@@ -98,7 +95,6 @@ function moveDown() {
     } else {
         // lock out 게임 오버
         const position = cellsAbsolutePosition(currentPiece);
-        console.log('position: ', position);
         if (position.every(cell => cell[1] < 20)) {
             showScreen(SCREEN_STATE.GAMEOVER);
             console.log("lock out 께임 오버");
