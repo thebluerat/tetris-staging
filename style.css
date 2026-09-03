@@ -19,6 +19,27 @@ section {
 #playing_screen.active, #start_screen.active, #paused_screen.active, #gameover_screen.active {
     display: flex !important;
 }
+.subject {
+    position: absolute;
+    width:fit-content;
+    height:fit-content;
+    color: black;
+    font-size: 40px;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* start_screen */
+.explain {
+    position: absolute;
+    width:fit-content;
+    height:fit-content;
+    color: black;
+    font-size: 20px;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 /* playing_screen */
 #playing_screen {
@@ -55,14 +76,4 @@ section {
     background-color: blue;
     opacity: 0.2;
     position: relative;
-}
-.paused {
-    position: absolute;
-    width:fit-content;
-    height:fit-content;
-    color: black;
-    font-size: 40px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }

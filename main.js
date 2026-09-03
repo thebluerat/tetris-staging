@@ -67,6 +67,9 @@ function lockPiece(position, currentPiece) {
     })       
 }
 
+// 줄 삭제 애니메이션 진행 여부 초깃값
+let lineClearAnimation = null; 
+
 // 줄 삭제 함수
 function clearRow(position) {
     // set: 블록이 고정된 행
