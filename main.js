@@ -10,6 +10,7 @@ const previewRenderer = new Renderer(previewCanvas, previewCellSize);
 const subPreviewCanvas = document.getElementById('sub_next_preview');
 const subPreviewCellSize = 5;
 const subPreviewRenderer = new Renderer(subPreviewCanvas, subPreviewCellSize);
+
 let isSoftDropping = false;
 
 showScreen(SCREEN_STATE.START);
@@ -60,8 +61,17 @@ const rotationLength = rotationOrder.length;
 let timePreviousFrame = 0;
 let dropTimeCounter = 0;
 let dropInterval = 1000;
+function decideDropInterval() {
+    if(isSoftDropping) {
+        dropInterval = 30;
+    } else {
+        dropInterval = 1000;
+    }
+    return dropInterval;
+}
 
 function dropTimeUpdate(time = 0) {
+    decideDropInterval()
     if(state == 'PLAYING') {
         const deltaTime = time - timePreviousFrame;
         // console.log('deltaTime', deltaTime);
