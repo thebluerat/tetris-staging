@@ -10,8 +10,25 @@ const previewRenderer = new Renderer(previewCanvas, previewCellSize);
 const subPreviewCanvas = document.getElementById('sub_next_preview');
 const subPreviewCellSize = 5;
 const subPreviewRenderer = new Renderer(subPreviewCanvas, subPreviewCellSize);
+let isSoftDropping = false;
 
 showScreen(SCREEN_STATE.START);
+
+// 레벨 0~29 낙하 프레임 수 (NTSC 기준, 60fps)
+const dropFramesByLevel = [
+    48, 43, 38, 33, 28, 23, 18, 13, 8, 6, // 0~9
+    5, 5, 5,                              // 10~12
+    4, 4, 4,                              // 13~15
+    3, 3, 3,                              // 16~18
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2,         // 19~28
+    1                                     // 29
+];
+
+function framesByLevel() {
+    if(level >= 29) {
+        return dropFramesByLevel[29];
+    }
+}
 
 function draw() {
     if(state == 'START' || state == 'GAMEOVER') return;
@@ -21,7 +38,7 @@ function draw() {
         cells: cellsAbsolutePosition(currentPiece),
         color: currentPiece.color,
     });
-
+    
     previewRenderer.clear();
     previewRenderer.drawPiece({
         cells: q.queue[0].cells,
@@ -37,19 +54,21 @@ function draw() {
 
 draw();
 
-let movingTimer = null;
 const rotationLength = rotationOrder.length;
 
 // 자동 낙하에 필요한 변수
-let lastDropTime = 0;
+let timePreviousFrame = 0;
 let dropTimeCounter = 0;
 let dropInterval = 1000;
 
 function dropTimeUpdate(time = 0) {
     if(state == 'PLAYING') {
-        const deltaTime = time - lastDropTime;
-        lastDropTime = time;
+        const deltaTime = time - timePreviousFrame;
+        // console.log('deltaTime', deltaTime);
+        timePreviousFrame = time;
+        // console.log('timePreviousFrame', timePreviousFrame);
         dropTimeCounter += deltaTime;
+        console.log('dropTimeCounter', dropTimeCounter);
         
         if(dropTimeCounter > dropInterval) {
             moveDown();
@@ -68,7 +87,7 @@ function lockPiece(position, currentPiece) {
 }
 
 // 줄 삭제 애니메이션 진행 여부 초깃값
-let lineClearAnimation = null; 
+// let lineClearAnimation = null; 
 
 // 줄 삭제 함수
 function clearRow(position) {
@@ -76,17 +95,20 @@ function clearRow(position) {
     const set = new Set(position.map(([col, row]) => row));
     // filteredGrid: 꽉 찬 행을 지운 grid
     const filteredGrid = grid.filter((row, idx) => !set.has(idx) || row.some(cell => cell == null));
+    const clearedCount = grid.length - filteredGrid.length;
     if (filteredGrid.length == grid.length) {
-        return;
+        return 0;
     } else {
-        const newRows = Array.from({length: (grid.length - filteredGrid.length)}, () => Array(cols).fill(null));
+        const newRows = Array.from({length: clearedCount}, () => Array(cols).fill(null));
         const newGrid = [...newRows, ...filteredGrid];
         grid.length = 0;
         grid.push(...newGrid);
     }
+    return clearedCount;
 }
 
 function moveDown() {
+    // const cleared = clearRow(position);
     if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
     const checkingPieceD = {
         ...currentPiece,
@@ -111,6 +133,7 @@ function moveDown() {
     }
 }
 function hardDrop() {
+    // const cleared = clearRow(position);
     if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
     let checkingPieceHardDrop = {
         ...currentPiece,
@@ -158,12 +181,9 @@ window.addEventListener('keydown', (event) => {
             }
         break;
         case "ArrowDown":
-            if(movingTimer !== null) return;
-            movingTimer = setInterval(() => {
-                moveDown()
-                dropTimeCounter = 0;
-                draw();
-            }, 30)
+            isSoftDropping = true;
+            dropTimeCounter = 0;
+            draw();
         break; 
         case "KeyX":
             const nextDirection = rotationOrder[(rotationOrder.indexOf(currentPiece.direction) + 1) % rotationLength];
@@ -241,8 +261,7 @@ window.addEventListener('keydown', (event) => {
 })
 window.addEventListener('keyup', (event) => {
     if(event.key == "ArrowDown" || event.key == "Space") {
-        clearInterval(movingTimer);
-        movingTimer = null;
+        isSoftDropping = false;
     }
     draw();
 })

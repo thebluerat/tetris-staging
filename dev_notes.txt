@@ -10,6 +10,19 @@
 - 삭제 애니메이션 종료 후 부드럽게 내려올 위의 rows
 
 
+<점수 매기기>
+점수 매기기가 더 급해서 점수 매기기부터 함
+근데 시간 관련해서 두 가지가 얽혀 있는 걸 발견해서 
+(dropTimeUpdate는 자동 낙하시키는 거였고 ArrowDown 눌렀을 때 moveDown()을 setInterval로 호출한 건 꾹 눌렀을 때 브라우저마다 다르게 반복실행하니까 그걸 setInterval로 시간 간격을 정해주려는 거)
+정리하려고 함
+
+function dropTimeUpdate
+time: requestAnimationFrame이 넘겨주는 값(브라우저 페이지가 로드된 시점(navigation 시작 시점)부터 지금까지 지난 시간(ms))
+deltaTime: 직전 프레임 이후 지난 시간(프레임 시간 차이)
+timePreviousFrame: 직전 프레임의 시각
+dropTimeCounter: 누적 deltaTime (dropInterval 시간이 차면 초기화됨)
+
+
 [js 파일]
 - state.js: 화면 전환 관리 (START, PLAYING, PAUSED, GAMEOVER)
 - board.js: 게임이 진행되는 보드 관리. grid 생성.
