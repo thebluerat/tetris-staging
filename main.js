@@ -24,12 +24,22 @@ const dropFramesByLevel = [
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,         // 19~28
     1                                     // 29
 ];
-
-function framesByLevel() {
+let level = 0;
+function FPStoMS(fPS) {
+    let ms = (1000 / 60) * fPS;
+    return ms;
+} 
+function framesByLevel(level) {
     if(level >= 29) {
         return dropFramesByLevel[29];
+    } else {
+        return dropFramesByLevel[level];
     }
 }
+// let clearedRowsCounter = 0;
+// function levelup () {
+
+// }
 
 function draw() {
     if(state == 'START' || state == 'GAMEOVER') return;
@@ -61,11 +71,12 @@ const rotationLength = rotationOrder.length;
 let timePreviousFrame = 0;
 let dropTimeCounter = 0;
 let dropInterval = 1000;
+
 function decideDropInterval() {
     if(isSoftDropping) {
         dropInterval = 30;
     } else {
-        dropInterval = 1000;
+        dropInterval = FPStoMS(framesByLevel(level));
     }
     return dropInterval;
 }
@@ -74,9 +85,7 @@ function dropTimeUpdate(time = 0) {
     decideDropInterval()
     if(state == 'PLAYING') {
         const deltaTime = time - timePreviousFrame;
-        // console.log('deltaTime', deltaTime);
         timePreviousFrame = time;
-        // console.log('timePreviousFrame', timePreviousFrame);
         dropTimeCounter += deltaTime;
         console.log('dropTimeCounter', dropTimeCounter);
         
@@ -118,7 +127,6 @@ function clearRow(position) {
 }
 
 function moveDown() {
-    // const cleared = clearRow(position);
     if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
     const checkingPieceD = {
         ...currentPiece,
@@ -138,12 +146,11 @@ function moveDown() {
         // 블록 고정
         lockPiece(position, currentPiece);   
         // 꽉 찬 줄 삭제
-        clearRow(position);
+        const cleared = clearRow(position);
         spawnPiece();
     }
 }
 function hardDrop() {
-    // const cleared = clearRow(position);
     if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
     let checkingPieceHardDrop = {
         ...currentPiece,
@@ -160,8 +167,8 @@ function hardDrop() {
     const hardDropPosition = cellsAbsolutePosition(currentPiece);
     //블록 고정
     lockPiece(hardDropPosition, currentPiece);
-     // 꽉 찬 줄 삭제
-    clearRow(hardDropPosition);
+    // 꽉 찬 줄 삭제
+    const cleared = clearRow(hardDropPosition);
     spawnPiece();
 }
 
