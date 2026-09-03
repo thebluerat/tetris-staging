@@ -36,10 +36,11 @@ function framesByLevel(level) {
         return dropFramesByLevel[level];
     }
 }
-// let clearedRowsCounter = 0;
-// function levelup () {
-
-// }
+let clearedRowsCounter = 0;
+function levelUp (cleared) {
+    clearedRowsCounter += cleared;
+    level = Math.trunc(clearedRowsCounter / 10);
+}
 
 function draw() {
     if(state == 'START' || state == 'GAMEOVER') return;
@@ -147,6 +148,7 @@ function moveDown() {
         lockPiece(position, currentPiece);   
         // 꽉 찬 줄 삭제
         const cleared = clearRow(position);
+        levelUp(cleared);
         spawnPiece();
     }
 }
@@ -169,6 +171,7 @@ function hardDrop() {
     lockPiece(hardDropPosition, currentPiece);
     // 꽉 찬 줄 삭제
     const cleared = clearRow(hardDropPosition);
+    levelUp(cleared);
     spawnPiece();
 }
 
