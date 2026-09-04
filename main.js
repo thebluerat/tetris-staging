@@ -17,7 +17,14 @@ showScreen(SCREEN_STATE.START);
 
 const levelDisplay = document.getElementById('level');
 const scoreDisplay = document.getElementById('score');
+const endingLevelDisplay = document.getElementById('ending_level');
+const finalScoreDisplay = document.getElementById('final_score');
+
 let score = 0;
+let level = 0;
+let finalScore = 0;
+let endingLevel = 0;
+
 // 줄 삭제할 때 점수 계산
 function calScoreLineClear(cleared) {
     if(cleared == 1) {
@@ -33,7 +40,7 @@ function calScoreLineClear(cleared) {
 function calScore(expression) {
     score += expression;
     scoreDisplay.textContent = score;
-    console.log('score: ', score);
+    console.log(score);
 }
 
 
@@ -46,7 +53,6 @@ const dropFramesByLevel = [
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,         // 19~28
     1                                     // 29
 ];
-let level = 0;
 function FPStoMS(fPS) {
     let ms = (1000 / 60) * fPS;
     return ms;
@@ -165,6 +171,10 @@ function moveDown() {
         // lock out 게임 오버
         const position = cellsAbsolutePosition(currentPiece);
         if (position.every(cell => cell[1] < 20)) {
+            endingLevel = level;
+            finalScore = score;
+            endingLevelDisplay.textContent = endingLevel;
+            finalScoreDisplay.textContent = finalScore;
             showScreen(SCREEN_STATE.GAMEOVER);
             console.log("lock out 께임 오버");
             return;

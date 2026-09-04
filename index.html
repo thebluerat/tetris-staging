@@ -29,9 +29,11 @@
 		<div id="boardANDpreview">
 			<div id="level_score">
 				<div id="level_display">
+					<span>LEVEL</span>
 					<output id="level">0</output>
 				</div>
 				<div id="score_display">
+					<span>SCORE</span>
 					<output id="score">0</output>
 				</div>
 			</div>
@@ -50,7 +52,21 @@
 		</span>
 		<div class="paused_screen"></div>
 	</section>
-	<section id="gameover_screen">gameover</section>
+	<section id="gameover_screen">
+		<span class="subject">
+			gameover
+		</span>
+		<div id="ending_level_score">
+			<div id="ending_level_display">
+				<span>LEVEL</span>
+				<output id="ending_level">0</output>
+			</div>
+			<div id="finalscore_display">
+				<span>SCORE</span>
+				<output id="final_score">0</output>
+			</div>
+		</div>
+	</section>
 	<script src="./state.js"></script>
 	<script src="./renderer.js"></script>
 	<script src="./board.js"></script>

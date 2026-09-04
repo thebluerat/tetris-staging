@@ -119,6 +119,10 @@ function spawnPiece() {
     if(isEmptySpace(checkingCellsSpawn, grid)) {
         q.enqueue(createRandomPiece());
     } else {
+        endingLevel = level;
+        finalScore = score;
+        endingLevelDisplay.textContent = endingLevel;
+        finalScoreDisplay.textContent = finalScore;
         showScreen(SCREEN_STATE.GAMEOVER);
         console.log("께임 오버");
         return;
