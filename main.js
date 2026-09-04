@@ -24,6 +24,7 @@ const dropFramesByLevel = [
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,         // 19~28
     1                                     // 29
 ];
+let score = 0;
 let level = 0;
 function FPStoMS(fPS) {
     let ms = (1000 / 60) * fPS;
@@ -39,7 +40,7 @@ function framesByLevel(level) {
 let clearedRowsCounter = 0;
 function levelUp (cleared) {
     clearedRowsCounter += cleared;
-    level = Math.trunc(clearedRowsCounter / 10);
+    level = Math.floor(clearedRowsCounter / 10);
 }
 
 function draw() {
@@ -88,7 +89,6 @@ function dropTimeUpdate(time = 0) {
         const deltaTime = time - timePreviousFrame;
         timePreviousFrame = time;
         dropTimeCounter += deltaTime;
-        console.log('dropTimeCounter', dropTimeCounter);
         
         if(dropTimeCounter > dropInterval) {
             moveDown();
@@ -136,6 +136,10 @@ function moveDown() {
     const checkingCellsD = cellsAbsolutePosition(checkingPieceD);
     if(isValidPosition(checkingCellsD) && isEmptySpace(checkingCellsD, grid)) {
         currentPiece.top = checkingPieceD.top;
+        if(isSoftDropping == true) {
+            score ++;
+            console.log(score);
+        }
     } else {
         // lock out 게임 오버
         const position = cellsAbsolutePosition(currentPiece);
