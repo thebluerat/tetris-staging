@@ -174,6 +174,7 @@ function moveDown() {
 }
 function hardDrop() {
     if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
+    let topBeforeHardDrop = currentPiece.top;
     let checkingPieceHardDrop = {
         ...currentPiece,
         top: currentPiece.top + 1
@@ -185,6 +186,8 @@ function hardDrop() {
     }
     checkingPieceHardDrop.top -= 1;
     currentPiece = checkingPieceHardDrop;
+    score += (2 * (currentPiece.top - topBeforeHardDrop));
+    console.log(score);
 
     const hardDropPosition = cellsAbsolutePosition(currentPiece);
     //블록 고정
