@@ -15,6 +15,8 @@ let isSoftDropping = false;
 
 showScreen(SCREEN_STATE.START);
 
+const levelDisplay = document.getElementById('level');
+const scoreDisplay = document.getElementById('score');
 let score = 0;
 function calScore(cleared) {
     if(cleared == 1) {
@@ -26,6 +28,7 @@ function calScore(cleared) {
     } else if(cleared == 4) {
         score += (1200 * (level + 1));
     }
+    scoreDisplay.textContent = score;
 }
 
 
@@ -54,6 +57,7 @@ let clearedRowsCounter = 0;
 function levelUp (cleared) {
     clearedRowsCounter += cleared;
     level = Math.floor(clearedRowsCounter / 10);
+    levelDisplay.textContent = level;
 }
 
 function draw() {
@@ -152,6 +156,7 @@ function moveDown() {
         if(isSoftDropping == true) {
             score ++;
             console.log(score);
+            scoreDisplay.textContent = score;
         }
     } else {
         // lock out 게임 오버
@@ -187,6 +192,7 @@ function hardDrop() {
     checkingPieceHardDrop.top -= 1;
     currentPiece = checkingPieceHardDrop;
     score += (2 * (currentPiece.top - topBeforeHardDrop));
+    scoreDisplay.textContent = score;
     console.log(score);
 
     const hardDropPosition = cellsAbsolutePosition(currentPiece);
