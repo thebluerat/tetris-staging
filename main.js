@@ -18,17 +18,22 @@ showScreen(SCREEN_STATE.START);
 const levelDisplay = document.getElementById('level');
 const scoreDisplay = document.getElementById('score');
 let score = 0;
-function calScore(cleared) {
+// 줄 삭제할 때 점수 계산
+function calScoreLineClear(cleared) {
     if(cleared == 1) {
-        score += (40 * (level + 1));
+        calScore(40 * (level + 1));
     } else if(cleared == 2) {
-        score += (100 * (level + 1));
+        calScore(100 * (level + 1));
     } else if(cleared == 3) {
-        score += (300 * (level + 1));
+        calScore(300 * (level + 1));
     } else if(cleared == 4) {
-        score += (1200 * (level + 1));
+        calScore(1200 * (level + 1));
     }
+}
+function calScore(expression) {
+    score += expression;
     scoreDisplay.textContent = score;
+    console.log('score: ', score);
 }
 
 
@@ -154,9 +159,7 @@ function moveDown() {
     if(isValidPosition(checkingCellsD) && isEmptySpace(checkingCellsD, grid)) {
         currentPiece.top = checkingPieceD.top;
         if(isSoftDropping == true) {
-            score ++;
-            console.log(score);
-            scoreDisplay.textContent = score;
+            calScore(1);
         }
     } else {
         // lock out 게임 오버
@@ -170,7 +173,7 @@ function moveDown() {
         lockPiece(position, currentPiece);   
         // 꽉 찬 줄 삭제
         const cleared = clearRow(position);
-        calScore(cleared);
+        calScoreLineClear(cleared);
         console.log('score: ', score);
         levelUp(cleared);
         console.log('level', level);
@@ -191,16 +194,14 @@ function hardDrop() {
     }
     checkingPieceHardDrop.top -= 1;
     currentPiece = checkingPieceHardDrop;
-    score += (2 * (currentPiece.top - topBeforeHardDrop));
-    scoreDisplay.textContent = score;
-    console.log(score);
+    calScore(2 * (currentPiece.top - topBeforeHardDrop));
 
     const hardDropPosition = cellsAbsolutePosition(currentPiece);
     //블록 고정
     lockPiece(hardDropPosition, currentPiece);
     // 꽉 찬 줄 삭제
     const cleared = clearRow(hardDropPosition);
-    calScore(cleared);
+    calScoreLineClear(cleared);
     console.log('score: ', score);
     levelUp(cleared);
     console.log('level', level);
