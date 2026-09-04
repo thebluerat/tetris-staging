@@ -15,6 +15,20 @@ let isSoftDropping = false;
 
 showScreen(SCREEN_STATE.START);
 
+let score = 0;
+function calScore(cleared) {
+    if(cleared == 1) {
+        score += (40 * (level + 1));
+    } else if(cleared == 2) {
+        score += (100 * (level + 1));
+    } else if(cleared == 3) {
+        score += (300 * (level + 1));
+    } else if(cleared == 4) {
+        score += (1200 * (level + 1));
+    }
+}
+
+
 // 레벨 0~29 낙하 프레임 수 (NTSC 기준, 60fps)
 const dropFramesByLevel = [
     48, 43, 38, 33, 28, 23, 18, 13, 8, 6, // 0~9
@@ -24,7 +38,6 @@ const dropFramesByLevel = [
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,         // 19~28
     1                                     // 29
 ];
-let score = 0;
 let level = 0;
 function FPStoMS(fPS) {
     let ms = (1000 / 60) * fPS;
@@ -152,7 +165,10 @@ function moveDown() {
         lockPiece(position, currentPiece);   
         // 꽉 찬 줄 삭제
         const cleared = clearRow(position);
+        calScore(cleared);
+        console.log('score: ', score);
         levelUp(cleared);
+        console.log('level', level);
         spawnPiece();
     }
 }
@@ -175,7 +191,10 @@ function hardDrop() {
     lockPiece(hardDropPosition, currentPiece);
     // 꽉 찬 줄 삭제
     const cleared = clearRow(hardDropPosition);
+    calScore(cleared);
+    console.log('score: ', score);
     levelUp(cleared);
+    console.log('level', level);
     spawnPiece();
 }
 
