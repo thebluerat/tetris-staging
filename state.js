@@ -42,11 +42,14 @@ function showScreen(newState) {
 };
 
 window.addEventListener('keydown', (event) => {
-    if(state === SCREEN_STATE.START) {
+    if(event.target.tagName == 'INPUT') return;
+    console.log("닉네임 상태: ", nickname);
+    if(state === SCREEN_STATE.START && (nickname !== undefined && nickname !== "")) {
         showScreen(SCREEN_STATE.PLAYING);
         lastDropTime = document.timeline.currentTime;
         requestAnimationFrame(dropTimeUpdate);
     }
+
     switch (event.code) {
         case "Escape":
             if(state === SCREEN_STATE.PLAYING) {
