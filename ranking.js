@@ -4,6 +4,10 @@ const startingMsg = document.getElementById("starting_msg");
 
 let nickname = undefined;
 
+window.onload = function() {
+    if (!nickname) nicknameInput.focus();
+}
+
 function handleInputAction(event) {
     if(event.type === 'keydown' && event.key !== 'Enter') {
         return;
@@ -18,6 +22,7 @@ function handleInputAction(event) {
         return;
     }
     console.log('nickname', nickname);
+    nicknameInput.blur();
     startingMsg.textContent = nickname + "님.. 아무 키나 누르면 시작합니다...";
 }
 

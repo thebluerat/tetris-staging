@@ -71,6 +71,7 @@ window.addEventListener('keydown', (event) => {
                 restartInfo.dataset.timerStarted = "";
                 resetGame();
                 showScreen(SCREEN_STATE.START);
+                nicknameInput.focus();
             }
         }
     }
