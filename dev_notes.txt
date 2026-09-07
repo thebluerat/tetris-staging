@@ -2,6 +2,25 @@
 닉네임 입력 받기 - 키다운 할 때마다 닉네임 상태를 받을 필요가 있나?
 게임 오버에서 스타트로 화면 전환 - 게임 상태도 초기화해야 함
 
+게임 restart 할 때 초기화할 변수
+- main.js
+score
+level
+finalScore
+endingLevel
+gameoverEnteredTime
+timePreviousFrame
+dropTimeCounter
+dropInterval
+clearedRowsCounter
+isSoftDropping
+
+- piece.js
+currentPiece
+
+- board.js
+grid
+
 20260903
 줄 삭제 애니메이션과 관계 없이 게임이 진행됐으면 좋겠음.
 상상한 애니메이션: 삭제될 줄이 옆에서부터 칸이 하나씩 사라지고 위 칸들이 부드럽게 내려오기

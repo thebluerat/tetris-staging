@@ -15,8 +15,6 @@ let gameoverEnteredTime = 0;
 
 let isSoftDropping = false;
 
-showScreen(SCREEN_STATE.START);
-
 const levelDisplay = document.getElementById('level');
 const scoreDisplay = document.getElementById('score');
 const endingLevelDisplay = document.getElementById('ending_level');
@@ -26,6 +24,27 @@ let score = 0;
 let level = 0;
 let finalScore = 0;
 let endingLevel = 0;
+
+// 레벨 0~29 낙하 프레임 수 (NTSC 기준, 60fps)
+const dropFramesByLevel = [
+    48, 43, 38, 33, 28, 23, 18, 13, 8, 6, // 0~9
+    5, 5, 5,                              // 10~12
+    4, 4, 4,                              // 13~15
+    3, 3, 3,                              // 16~18
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2,         // 19~28
+    1                                     // 29
+];
+
+let clearedRowsCounter = 0;
+
+const rotationLength = rotationOrder.length;
+
+// 자동 낙하에 필요한 변수
+let timePreviousFrame = 0;
+let dropTimeCounter = 0;
+let dropInterval = 1000;
+
+showScreen(SCREEN_STATE.START);
 
 // 줄 삭제할 때 점수 계산
 function calScoreLineClear(cleared) {
@@ -46,15 +65,6 @@ function calScore(expression) {
 }
 
 
-// 레벨 0~29 낙하 프레임 수 (NTSC 기준, 60fps)
-const dropFramesByLevel = [
-    48, 43, 38, 33, 28, 23, 18, 13, 8, 6, // 0~9
-    5, 5, 5,                              // 10~12
-    4, 4, 4,                              // 13~15
-    3, 3, 3,                              // 16~18
-    2, 2, 2, 2, 2, 2, 2, 2, 2, 2,         // 19~28
-    1                                     // 29
-];
 function FPStoMS(fPS) {
     let ms = (1000 / 60) * fPS;
     return ms;
@@ -66,7 +76,6 @@ function framesByLevel(level) {
         return dropFramesByLevel[level];
     }
 }
-let clearedRowsCounter = 0;
 function levelUp (cleared) {
     clearedRowsCounter += cleared;
     level = Math.floor(clearedRowsCounter / 10);
@@ -97,12 +106,6 @@ function draw() {
 
 draw();
 
-const rotationLength = rotationOrder.length;
-
-// 자동 낙하에 필요한 변수
-let timePreviousFrame = 0;
-let dropTimeCounter = 0;
-let dropInterval = 1000;
 
 function decideDropInterval() {
     if(isSoftDropping) {
