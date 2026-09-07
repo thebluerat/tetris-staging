@@ -11,6 +11,8 @@ const subPreviewCanvas = document.getElementById('sub_next_preview');
 const subPreviewCellSize = 5;
 const subPreviewRenderer = new Renderer(subPreviewCanvas, subPreviewCellSize);
 
+let gameoverEnteredTime = 0;
+
 let isSoftDropping = false;
 
 showScreen(SCREEN_STATE.START);
@@ -176,7 +178,9 @@ function moveDown() {
             endingLevelDisplay.textContent = endingLevel;
             finalScoreDisplay.textContent = finalScore;
             showScreen(SCREEN_STATE.GAMEOVER);
+            gameoverEnteredTime = performance.now();
             console.log("lock out 께임 오버");
+            console.log("gameoverEnteredTime: ", gameoverEnteredTime);
             return;
         }
         // 블록 고정

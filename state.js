@@ -14,6 +14,7 @@ const SCREEN = {
     pausedScreen: document.getElementById('paused_screen'),
     gameoverScreen: document.getElementById('gameover_screen'),
 }
+const restartInfo = document.getElementById('restart');
 
 // 화면 전환
 function showScreen(newState) {
@@ -51,6 +52,17 @@ window.addEventListener('keydown', (event) => {
         showScreen(SCREEN_STATE.PLAYING);
         lastDropTime = document.timeline.currentTime;
         requestAnimationFrame(dropTimeUpdate);
+    }
+    if(state === SCREEN_STATE.GAMEOVER) {
+        setTimeout(function() {
+            restartInfo.style.display = "block";
+        }, 3000);
+        if (performance.now() - gameoverEnteredTime >= 3000) {
+            console.log("게임오버 화면 진입한 지 몇 초 지남: ", (performance.now() - gameoverEnteredTime));
+            if(event.code == "Space") {
+                showScreen(SCREEN_STATE.START);
+            }
+        }
     }
 
     switch (event.code) {

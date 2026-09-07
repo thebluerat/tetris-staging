@@ -124,7 +124,9 @@ function spawnPiece() {
         endingLevelDisplay.textContent = endingLevel;
         finalScoreDisplay.textContent = finalScore;
         showScreen(SCREEN_STATE.GAMEOVER);
+        gameoverEnteredTime = performance.now();
         console.log("께임 오버");
+        console.log("gameoverEnteredTime: ", gameoverEnteredTime);
         return;
     }
 };
