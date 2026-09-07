@@ -50,16 +50,26 @@ window.addEventListener('keydown', (event) => {
     console.log("닉네임 상태: ", nickname);
     if(state === SCREEN_STATE.START && (nickname !== undefined && nickname !== "")) {
         showScreen(SCREEN_STATE.PLAYING);
+        initQueue();
+        spawnPiece();
         lastDropTime = document.timeline.currentTime;
-        requestAnimationFrame(dropTimeUpdate);
+        aniFrame = requestAnimationFrame(dropTimeUpdate);
     }
     if(state === SCREEN_STATE.GAMEOVER) {
-        setTimeout(function() {
-            restartInfo.style.display = "block";
-        }, 3000);
+        if(restartInfo.classList.contains("hidden") && !restartInfo.dataset.timerStarted) {
+            restartInfo.dataset.timerStarted = "true";
+            setTimeout(function() {
+                restartInfo.classList.remove("hidden");
+                restartInfo.dataset.timerStarted = "";
+            }, 3000);
+
+        }
         if (performance.now() - gameoverEnteredTime >= 3000) {
             console.log("게임오버 화면 진입한 지 몇 초 지남: ", (performance.now() - gameoverEnteredTime));
             if(event.code == "Space") {
+                restartInfo.classList.add("hidden");
+                restartInfo.dataset.timerStarted = "";
+                resetGame();
                 showScreen(SCREEN_STATE.START);
             }
         }

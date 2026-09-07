@@ -44,6 +44,8 @@ let timePreviousFrame = 0;
 let dropTimeCounter = 0;
 let dropInterval = 1000;
 
+let aniFrame;
+
 showScreen(SCREEN_STATE.START);
 
 // 줄 삭제할 때 점수 계산
@@ -129,7 +131,11 @@ function dropTimeUpdate(time = 0) {
         }
     }
     draw();
-    requestAnimationFrame(dropTimeUpdate);
+    aniFrame = requestAnimationFrame(dropTimeUpdate);
+};
+function stopDropTimeUpdate() {
+    cancelAnimationFrame(aniFrame);
+    aniFrame = null;
 };
 
 // 블록 고정 함수 (moveDown(), hardDrop() 공통)
@@ -224,6 +230,31 @@ function hardDrop() {
     console.log('level', level);
     spawnPiece();
 }
+
+function resetGame() {
+    stopDropTimeUpdate();
+    score = 0;
+    level = 0;
+    clearedRowsCounter = 0;
+    finalScore = 0;
+    endingLevel = 0;
+    levelUp(0);
+    calScore(0);
+    gameoverEnteredTime = 0;
+    timePreviousFrame = 0;
+    dropInterval = 1000;
+    dropTimeCounter = 0;
+    isSoftDropping = false;
+    const resetGrid = Array.from({length: rows}, () => Array(cols).fill(null));
+    grid.length = 0;
+    grid.push(...resetGrid);
+    q.queue.length = 0;
+    currentPiece = "";
+    nickname = undefined;
+    nicknameInput.value = "";
+    startingMsg.textContent = "";
+}
+
 
 window.addEventListener('keydown', (event) => {
     if(state !== 'PLAYING') return; 

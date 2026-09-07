@@ -103,8 +103,6 @@ function initQueue() {
     q.enqueue(createRandomPiece());
 }
 
-initQueue();
-
 let currentPiece = "";
 
 function spawnPiece() {
@@ -155,5 +153,3 @@ function createRandomPiece() {
         color: PIECES[piecesKeys[randomIndex]]['color'],
     };
 }
-
-spawnPiece();

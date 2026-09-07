@@ -16,6 +16,9 @@ section {
     height: 100%;
     background-color: azure;
 }
+.hidden {
+    display: none !important;
+}
 #playing_screen.active, #start_screen.active, #paused_screen.active, #gameover_screen.active {
     display: flex !important;
 }
@@ -93,7 +96,6 @@ section {
     transform: translate(-50%, -50%);
 }
 #restart {
-    display: none;
     position: absolute;
     width:fit-content;
     height:fit-content;
