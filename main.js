@@ -91,18 +91,21 @@ function draw() {
     renderer.drawPiece({
         cells: cellsAbsolutePosition(currentPiece),
         color: currentPiece.color,
+        excludeBufferZone: 20,
     });
     
     previewRenderer.clear();
     previewRenderer.drawPiece({
         cells: q.queue[0].cells,
         color: q.queue[0].color,
+        excludeBufferZone: -2,
     });
 
     subPreviewRenderer.clear();
     subPreviewRenderer.drawPiece({
         cells: q.queue[1].cells,
         color: q.queue[1].color,
+        excludeBufferZone: -2,
     });
 }
 

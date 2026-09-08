@@ -32,11 +32,10 @@ class Renderer {
     }
 
     drawPiece(piece) {
-        const excludeBufferZone = 20;
         for(const cell of piece.cells) {
             const col = cell[0];
             const row = cell[1];
-            this.drawCell(row - excludeBufferZone, col, piece.color);
+            this.drawCell(row - piece.excludeBufferZone, col, piece.color);
         }
     }
 
