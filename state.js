@@ -16,6 +16,8 @@ const SCREEN = {
 }
 const restartInfo = document.getElementById('restart');
 
+const waitingTimeToRestart = 3000;
+
 // 화면 전환
 function showScreen(newState) {
     state = newState;
@@ -48,7 +50,7 @@ function showScreen(newState) {
             setTimeout(function() {
                 restartInfo.classList.remove("hidden");
                 restartInfo.dataset.timerStarted = "";
-            }, 3000);
+            }, waitingTimeToRestart);
         }
     }
 };
@@ -67,7 +69,7 @@ window.addEventListener('keydown', (event) => {
         return;
     }
     if(state === SCREEN_STATE.GAMEOVER) {
-        if (performance.now() - gameoverEnteredTime >= 3000) {
+        if (performance.now() - gameoverEnteredTime >= waitingTimeToRestart) {
             console.log("게임오버 화면 진입한 지 몇 초 지남: ", (performance.now() - gameoverEnteredTime));
             if(event.code == "Space") {
                 restartInfo.classList.add("hidden");
