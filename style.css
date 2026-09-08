@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+	font-family: 'Press Start 2P', monospace;
 }
 body {
     width: 100%;
@@ -82,11 +83,6 @@ section {
 }
 
 /* gameover_screen */
-#gameover_screen {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
 #ending_level_score {
     position: absolute;
     width:fit-content;
@@ -95,11 +91,111 @@ section {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-#restart {
-    position: absolute;
-    width:fit-content;
-    height:fit-content;
-    top: 90%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+
+@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+
+#gameover_screen {
+	background: #0a0a0f;
+	color: #e8e8ec;
+	flex-direction: column;
+	align-items: center;
+	padding: 28px 18px 22px;
+}
+#gameover_screen .subject {
+	position: static;
+	transform: none;
+	text-align: center;
+	font-size: 30px;
+	letter-spacing: 2px;
+	color: #ff3b3b;
+	text-shadow: 3px 3px 0 #6e0000;
+	margin-bottom: 22px;
+}
+#ranking_card {
+	width: 100%;
+	max-width: 360px;
+	background: #111118;
+	border: 4px solid #e8e8ec;
+	box-shadow: 6px 6px 0 #000;
+	padding: 14px 10px;
+	box-sizing: border-box;
+}
+#ranking_title {
+	text-align: center;
+	font-size: 12px;
+	color: #ffd400;
+	letter-spacing: 2px;
+	margin-bottom: 10px;
+}
+#ranking_header {
+	display: grid;
+	grid-template-columns: 44px 1fr 74px;
+	gap: 4px;
+	font-size: 9px;
+	color: #7a7a86;
+	border-bottom: 2px solid #35353f;
+	padding-bottom: 8px;
+	margin-bottom: 4px;
+}
+#ranking_list {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	overflow: hidden;
+}
+#ranking_list.expanded {
+	max-height: 280px;
+	overflow-y: auto;
+}
+.ranking_row {
+	display: grid;
+	grid-template-columns: 44px 1fr 74px;
+	gap: 4px;
+	align-items: center;
+	font-size: 11px;
+	padding: 8px 4px;
+	border: 2px solid transparent;
+	box-sizing: border-box;
+}
+.ranking_row.even { background: #161620; }
+.ranking_row.odd { background: #131319; }
+.ranking_row.is_me {
+	background: #3a2c00;
+	border: 2px solid #ffd400;
+	box-shadow: 0 0 0 1px #ffd400 inset;
+	color: #ffd400;
+}
+.ranking_row .rank { color: #7a7a86; }
+.ranking_row.is_me .rank { color: #ffd400; }
+.ranking_row .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ranking_row .score { text-align: right; }
+#ranking_toggle {
+	width: 100%;
+	margin-top: 8px;
+	background: #1c1c26;
+	border: 2px solid #4a4a56;
+	color: #ffd400;
+	font-family: 'Press Start 2P', monospace;
+	font-size: 14px;
+	letter-spacing: 4px;
+	padding: 8px 0;
+	cursor: pointer;
+}
+#my_record {
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 2px dashed #35353f;
+	font-size: 11px;
+	color: #ffd400;
+	text-align: center;
+}
+
+#gameover_screen #restart {
+	position: static;
+	transform: none;
+	margin-top: 26px;
+	font-size: 9px;
+	color: #6a6a76;
+	letter-spacing: 1px;
+	animation: blink 1s steps(1) infinite;
 }
