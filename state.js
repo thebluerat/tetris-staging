@@ -50,11 +50,13 @@ window.addEventListener('keydown', (event) => {
     console.log("닉네임 상태: ", nickname);
     if(state === SCREEN_STATE.START && (nickname !== undefined && nickname !== "")) {
         showScreen(SCREEN_STATE.PLAYING);
+        event.stopImmediatePropagation();
         initQueue();
         spawnPiece();
         previewDraw();
         lastDropTime = document.timeline.currentTime;
         aniFrame = requestAnimationFrame(dropTimeUpdate);
+        return;
     }
     if(state === SCREEN_STATE.GAMEOVER) {
         if(restartInfo.classList.contains("hidden") && !restartInfo.dataset.timerStarted) {
@@ -77,7 +79,6 @@ window.addEventListener('keydown', (event) => {
             }
         }
     }
-
     switch (event.code) {
         case "Escape":
             if(state === SCREEN_STATE.PLAYING) {
@@ -87,8 +88,8 @@ window.addEventListener('keydown', (event) => {
                 lastDropTime = document.timeline.currentTime;
             }
             console.log('esc 누름: ', state);
-        break;
-    }
+            break;
+        }
 })
 
 
