@@ -98,14 +98,14 @@ function draw() {
     previewRenderer.drawPiece({
         cells: q.queue[0].cells,
         color: q.queue[0].color,
-        excludeBufferZone: -2,
+        excludeBufferZone: 0,
     });
 
     subPreviewRenderer.clear();
     subPreviewRenderer.drawPiece({
         cells: q.queue[1].cells,
         color: q.queue[1].color,
-        excludeBufferZone: -2,
+        excludeBufferZone: 0,
     });
 }
 
