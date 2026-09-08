@@ -38,10 +38,14 @@ class Renderer {
             this.drawCell(row - piece.excludeBufferZone, col, piece.color);
         }
     }
-
-    render(grid, piece) {
-        this.clear();
-        this.drawGrid(grid);
-        this.drawPiece(piece);
+    drawPreviewPiece(piece) {
+        const previewPiece = piece;
+        for(const cell of piece.cells) {
+            const col = cell[0];
+            const row = cell[1];
+            blockRenderOffset(previewPiece);
+            const offsets = blockRenderOffset(previewPiece);
+            this.drawCell(row + offsets[1], col + offsets[0], piece.color);
+        }
     }
 }

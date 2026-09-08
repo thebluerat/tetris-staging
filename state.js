@@ -52,6 +52,7 @@ window.addEventListener('keydown', (event) => {
         showScreen(SCREEN_STATE.PLAYING);
         initQueue();
         spawnPiece();
+        previewDraw();
         lastDropTime = document.timeline.currentTime;
         aniFrame = requestAnimationFrame(dropTimeUpdate);
     }

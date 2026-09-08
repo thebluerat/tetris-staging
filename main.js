@@ -93,24 +93,27 @@ function draw() {
         color: currentPiece.color,
         excludeBufferZone: 20,
     });
-    
+}
+function previewDraw() {
+    if(state == 'START' || state == 'GAMEOVER') return;
     previewRenderer.clear();
-    previewRenderer.drawPiece({
+    previewRenderer.drawPreviewPiece({
         cells: q.queue[0].cells,
         color: q.queue[0].color,
-        excludeBufferZone: 0,
+        size: previewCellSize,
+        whatPreview: previewCanvas,
     });
 
     subPreviewRenderer.clear();
-    subPreviewRenderer.drawPiece({
+    subPreviewRenderer.drawPreviewPiece({
         cells: q.queue[1].cells,
         color: q.queue[1].color,
-        excludeBufferZone: 0,
+        size: subPreviewCellSize,
+        whatPreview: subPreviewCanvas,
     });
 }
 
 draw();
-
 
 function decideDropInterval() {
     if(isSoftDropping) {
@@ -204,6 +207,7 @@ function moveDown() {
         levelUp(cleared);
         console.log('level', level);
         spawnPiece();
+        previewDraw();
     }
 }
 function hardDrop() {
@@ -232,6 +236,7 @@ function hardDrop() {
     levelUp(cleared);
     console.log('level', level);
     spawnPiece();
+    previewDraw();
 }
 
 function resetGame() {

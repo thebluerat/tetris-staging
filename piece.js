@@ -8,6 +8,22 @@ const PIECES = {
     L: {color : 'orange', cells: [[1,0], [1,1], [1,2], [2,2]]},
 };
 
+function blockRenderOffset(piece) {
+        const colMax = Math.max(...piece.cells.map(x => x[0]));
+        const rowMax = Math.max(...piece.cells.map(x => x[1]));
+        const colMin = Math.min(...piece.cells.map(x => x[0]));
+        const rowMin = Math.min(...piece.cells.map(x => x[1]));
+        const colSize = (colMax - colMin  + 1) * piece.size;
+        const rowSize = (rowMax - rowMin  + 1) * piece.size;
+        const boxWidth = piece.whatPreview.offsetWidth;
+        const boxHeight = piece.whatPreview.offsetHeight;
+        const remainingCol = (boxWidth - colSize) / piece.size;
+        const remainingRow = (boxHeight - rowSize) / piece.size;
+        const colOffset = remainingCol / 2 - colMin;
+        const rowOffset = remainingRow / 2 - rowMin;
+        return [colOffset, rowOffset];
+};
+
 // 회전할 때 예쁜 모양을 보여주기 위해 블록이 회전한 모양을 일일이 그려주기로 결심했다
 const RotatedShapes = {
     I: {
