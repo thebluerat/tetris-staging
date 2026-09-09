@@ -154,22 +154,28 @@ function lockPiece(position, currentPiece) {
 // 줄 삭제 애니메이션 진행 여부 초깃값
 let lineClearAnimation = null; 
 
+let gridBeforeCleared = [];
+
 // 줄 삭제 함수
 function clearRow(position) {
     // set: 블록이 고정된 행
     const set = new Set(position.map(([col, row]) => row));
     // filteredGrid: 꽉 찬 행을 지운 grid
     const filteredGrid = grid.filter((row, idx) => !set.has(idx) || row.some(cell => cell == null));
+    const clearedIndices = new Set(grid.map((_, idx) => idx).filter(idx => set.has(idx) && grid[idx].every(cell => cell !== null)));
     const clearedCount = grid.length - filteredGrid.length;
     if (filteredGrid.length == grid.length) {
-        return 0;
+        return {
+            clearedCount: 0,
+            clearedIndices: new Set(),
+        };
     } else {
         const newRows = Array.from({length: clearedCount}, () => Array(cols).fill(null));
         const newGrid = [...newRows, ...filteredGrid];
         grid.length = 0;
         grid.push(...newGrid);
     }
-    return clearedCount;
+    return {clearedCount, clearedIndices};
 }
 
 function moveDown() {
@@ -185,8 +191,8 @@ function moveDown() {
             calScore(1);
         }
     } else {
-        // lock out 게임 오버
         const position = cellsAbsolutePosition(currentPiece);
+        // lock out 게임 오버
         if (position.every(cell => cell[1] < 20)) {
             endingLevel = level;
             finalScore = score;
@@ -202,11 +208,12 @@ function moveDown() {
         }
         // 블록 고정
         lockPiece(position, currentPiece);   
+        gridBeforeCleared = structuredClone(grid);
         // 꽉 찬 줄 삭제
-        const cleared = clearRow(position);
-        calScoreLineClear(cleared);
+        const {clearedCount, clearedIndices} = clearRow(position);
+        calScoreLineClear(clearedCount);
         console.log('score: ', score);
-        levelUp(cleared);
+        levelUp(clearedCount);
         console.log('level', level);
         spawnPiece();
         previewDraw();
@@ -231,11 +238,12 @@ function hardDrop() {
     const hardDropPosition = cellsAbsolutePosition(currentPiece);
     //블록 고정
     lockPiece(hardDropPosition, currentPiece);
+    gridBeforeCleared = structuredClone(grid);
     // 꽉 찬 줄 삭제
-    const cleared = clearRow(hardDropPosition);
-    calScoreLineClear(cleared);
+    const {clearedCount, clearedIndices} = clearRow(hardDropPosition);
+    calScoreLineClear(clearedCount);
     console.log('score: ', score);
-    levelUp(cleared);
+    levelUp(clearedCount);
     console.log('level', level);
     spawnPiece();
     previewDraw();
