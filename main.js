@@ -263,6 +263,8 @@ function resetGame() {
     nickname = undefined;
     nicknameInput.value = "";
     startingMsg.textContent = "";
+    rankingExpanded = false;
+    rankingList.classList.remove('expanded');
 }
 
 
