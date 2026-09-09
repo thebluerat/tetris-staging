@@ -9,6 +9,22 @@
 - 지워진 row가 1개: 왼->오 / 오->왼 / 뒤죽박죽 중 랜덤으로 하나
 - 지워진 row가 2개 이상: 왼->오 / 오->왼 중 시작 패턴만 랜덤으로 뽑고, row 인덱스 순서대로 번갈아 적용 (i % 2로 뒤집기)
 
+아 그럼 const reverseRow = [...row].reverse();하면 되겠네..
+셔플은 
+const shuffleRow = (arr) => {
+    const shuffledRow = [];
+    const tempArr = [...arr];
+    while(tempArr.length) {
+        const lastIdx = tempArr.length - 1;
+        let shuffleKey = Math.floor(Math.random() * tempArr.length);
+        let tempEl = tempArr[lastIdx];
+        tempArr[lastIdx] = tempArr[shuffleKey];
+        tempArr[shuffleKey] = tempEl;
+        shuffledRow.push(tempArr.pop());
+    }
+    return shuffledRow;
+}
+
 
 20260908
 미리보기 블록 가운데 정렬

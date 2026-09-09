@@ -156,6 +156,57 @@ let lineClearAnimation = null;
 
 let gridBeforeCleared = [];
 
+// 지워지는 row마다 패턴(배열)을 짝지어주기
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+function clearPattern(clearedIndices, clearedCount) {
+    const patternMap = new Map();
+    const arr = Array.from({length: cols}, (_, index) => index);
+    const reverseArr = [...arr].reverse();
+    const shuffleRow = (arr) => {
+        const shuffledRow = [];
+        const tempArr = [...arr];
+        while(tempArr.length) {
+            const lastIdx = tempArr.length - 1;
+            let shuffleKey = Math.floor(Math.random() * tempArr.length);
+            let tempEl = tempArr[lastIdx];
+            tempArr[lastIdx] = tempArr[shuffleKey];
+            tempArr[shuffleKey] = tempEl;
+            shuffledRow.push(tempArr.pop());
+        }
+        return shuffledRow;
+    }
+    
+    if(clearedCount === 1) {
+        const randomNum = getRandomInt(3);
+        const clearedOneIdx = [...clearedIndices][0];
+        if(randomNum === 0) {
+            patternMap.set(clearedOneIdx, arr);
+        } else if(randomNum === 1) {
+            patternMap.set(clearedOneIdx, reverseArr);
+        } else if(randomNum === 2) {
+            patternMap.set(clearedOneIdx, shuffleRow(arr));
+        }
+        return patternMap;
+    } else if(clearedCount >= 2) {
+        const randomNum = getRandomInt(2);
+        const clearedIndicesArr = [...clearedIndices];
+        const startPattern = randomNum === 0 ? arr : reverseArr;
+        const otherPattern = randomNum === 0 ? reverseArr : arr;
+        let i = 0;
+        for(const rowIdx of clearedIndicesArr) {
+            if(i % 2 === 0) {
+                patternMap.set(rowIdx, startPattern);
+            } else {
+                patternMap.set(rowIdx, otherPattern);
+            }
+            i++;
+        }
+        return patternMap;
+    }
+}
+
 // 줄 삭제 함수
 function clearRow(position) {
     // set: 블록이 고정된 행
@@ -163,7 +214,9 @@ function clearRow(position) {
     // filteredGrid: 꽉 찬 행을 지운 grid
     const filteredGrid = grid.filter((row, idx) => !set.has(idx) || row.some(cell => cell == null));
     const clearedIndices = new Set(grid.map((_, idx) => idx).filter(idx => set.has(idx) && grid[idx].every(cell => cell !== null)));
+    console.log('*****************clearedIndices*****************', clearedIndices);
     const clearedCount = grid.length - filteredGrid.length;
+    clearPattern(clearedIndices, clearedCount);
     if (filteredGrid.length == grid.length) {
         return {
             clearedCount: 0,

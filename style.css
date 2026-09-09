@@ -10,7 +10,7 @@ body {
 	display: flex;
 	justify-content: center;
     background-image: url(./backgroundIMG.jpg);
-    background-size: contain;
+    background-size: 552px 100%;
 	background-repeat: no-repeat;
 	background-position: center center;
 	overflow: hidden;
