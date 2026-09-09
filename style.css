@@ -85,11 +85,11 @@ section {
 }
 
 /* gameover_screen */
-#ending_level_score {
+#my_record {
     position: absolute;
     width:fit-content;
     height:fit-content;
-    top: 60%;
+    top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -141,12 +141,12 @@ section {
 }
 #ranking_list {
 	display: flex;
+	height: 370px;
 	flex-direction: column;
 	gap: 3px;
 	overflow: hidden;
 }
 #ranking_list.expanded {
-	max-height: 280px;
 	overflow-y: auto;
 }
 .ranking_row {
@@ -182,14 +182,7 @@ section {
 	letter-spacing: 4px;
 	padding: 8px 0;
 	cursor: pointer;
-}
-#my_record {
-	margin-top: 8px;
-	padding-top: 8px;
-	border-top: 2px dashed #35353f;
-	font-size: 11px;
-	color: #ffd400;
-	text-align: center;
+	line-height: 1;
 }
 
 #gameover_screen #restart {

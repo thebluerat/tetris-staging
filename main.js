@@ -192,6 +192,8 @@ function moveDown() {
             finalScore = score;
             endingLevelDisplay.textContent = endingLevel;
             finalScoreDisplay.textContent = finalScore;
+            const allRows = saveScore(nickname, finalScore, true);
+            renderRanking(allRows);
             showScreen(SCREEN_STATE.GAMEOVER);
             gameoverEnteredTime = performance.now();
             console.log("lock out 께임 오버");

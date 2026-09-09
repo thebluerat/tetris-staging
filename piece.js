@@ -137,6 +137,8 @@ function spawnPiece() {
         finalScore = score;
         endingLevelDisplay.textContent = endingLevel;
         finalScoreDisplay.textContent = finalScore;
+        const allRows = saveScore(nickname, finalScore, true);
+        renderRanking(allRows);
         showScreen(SCREEN_STATE.GAMEOVER);
         gameoverEnteredTime = performance.now();
         console.log("께임 오버");

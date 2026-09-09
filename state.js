@@ -58,6 +58,7 @@ function showScreen(newState) {
 window.addEventListener('keydown', (event) => {
     if(event.target.tagName == 'INPUT') return;
     console.log("닉네임 상태: ", nickname);
+    console.log("점수", score);
     if(state === SCREEN_STATE.START && (nickname !== undefined && nickname !== "")) {
         showScreen(SCREEN_STATE.PLAYING);
         event.stopImmediatePropagation();
