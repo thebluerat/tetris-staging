@@ -3,19 +3,25 @@
 	font-family: 'Press Start 2P', monospace;
 }
 body {
-    width: 100%;
+	width: 100vw;
     height: 100vh;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
+	display: flex;
+	justify-content: center;
     background-image: url(./backgroundIMG.jpg);
-    background-size: 100%;
+    background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
+	overflow: hidden;
 }
 section {
     display: none !important;
+	max-width: 553px;
 }
 .active {
-    display: blcok !important;
-    width: 100%;
+    display: flex !important;
+	justify-content: center;
     height: 100%;
     /* background-color: azure; */
 }
@@ -42,6 +48,8 @@ section {
     height:fit-content;
     color: black;
     font-size: 20px;
+	box-sizing: border-box;
+	padding: 20%;
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -49,6 +57,7 @@ section {
 
 /* playing_screen */
 #playing_screen {
+	max-width: 552px;
     justify-content: center;
     align-items: center;
 }
@@ -89,7 +98,7 @@ section {
     position: absolute;
     width:fit-content;
     height:fit-content;
-    top: 80%;
+    top: 90%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -97,6 +106,7 @@ section {
 @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 
 #gameover_screen {
+	width: 100%;
 	background: #0a0a0f;
 	color: #e8e8ec;
 	flex-direction: column;
