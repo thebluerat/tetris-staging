@@ -94,9 +94,11 @@ function levelUp (cleared) {
 function draw() {
     if(state == 'START' || state == 'GAMEOVER') return;
     renderer.clear();
+    // 줄 삭제될 때
     if(lineClearAnimation) {
+        console.log('lineClearAnimation.startTime, lineClearAnimation.duration', lineClearAnimation.startTime, lineClearAnimation.duration);
         const clearAnimationEndTime = lineClearAnimation.startTime + lineClearAnimation.duration;
-        if(timePreviousFrame >= endTime) {
+        if(timePreviousFrame >= clearAnimationEndTime) {
             lineClearAnimation = null;
         }
     } else {

@@ -48,4 +48,7 @@ class Renderer {
             this.drawCell(row + offsets[1], col + offsets[0], piece.color);
         }
     }
+    drawDisappearingCells() {
+        
+    }
 }
