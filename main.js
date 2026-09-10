@@ -75,7 +75,6 @@ function calScoreLineClear(cleared) {
 function calScore(expression) {
     score += expression;
     scoreDisplay.textContent = score;
-    console.log(score);
 }
 
 
@@ -221,7 +220,6 @@ function clearPattern(clearedIndices, clearedCount) {
         } else if(randomNum === 2) {
             patternMap.set(clearedOneIdx, shuffleRow(arr));
         }
-        console.log('*****111111111111111******patternMap*************************', patternMap);
         return patternMap;
     // 2줄 이상 삭제할 때는 왼쪽이나 오른쪽부터 시작해서 사라지는 걸 번갈아가면서
     } else if(clearedCount >= 2) {
@@ -238,7 +236,6 @@ function clearPattern(clearedIndices, clearedCount) {
             }
             i++;
         }
-        console.log('*****222222222222222222222******patternMap*************************', patternMap);
         return patternMap;
     }
 }
@@ -301,8 +298,6 @@ function moveDown() {
             renderRanking(allRows);
             showScreen(SCREEN_STATE.GAMEOVER);
             gameoverEnteredTime = performance.now();
-            console.log("lock out 께임 오버");
-            console.log("gameoverEnteredTime: ", gameoverEnteredTime);
             return;
         }
         // 블록 고정
@@ -325,9 +320,7 @@ function moveDown() {
             }; 
         }
         calScoreLineClear(clearedCount);
-        console.log('score: ', score);
         levelUp(clearedCount);
-        console.log('level', level);
         spawnPiece();
         previewDraw();
     }
@@ -369,9 +362,7 @@ function hardDrop() {
         }; 
         }
     calScoreLineClear(clearedCount);
-    console.log('score: ', score);
     levelUp(clearedCount);
-    console.log('level', level);
     spawnPiece();
     previewDraw();
 }

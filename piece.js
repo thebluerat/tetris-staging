@@ -141,8 +141,6 @@ function spawnPiece() {
         renderRanking(allRows);
         showScreen(SCREEN_STATE.GAMEOVER);
         gameoverEnteredTime = performance.now();
-        console.log("께임 오버");
-        console.log("gameoverEnteredTime: ", gameoverEnteredTime);
         return;
     }
 };

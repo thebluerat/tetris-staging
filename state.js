@@ -39,7 +39,6 @@ function showScreen(newState) {
         SCREEN.playingScreen.classList.remove('active');
     } else if (newState === SCREEN_STATE.GAMEOVER) {
         timeGameOver = document.timeline.currentTime;
-        console.log('timeGameOver', timeGameOver);
         SCREEN.gameoverScreen.classList.add('active');
         SCREEN.playingScreen.classList.remove('active');
         SCREEN.startScreen.classList.remove('active');
@@ -57,8 +56,6 @@ function showScreen(newState) {
 
 window.addEventListener('keydown', (event) => {
     if(event.target.tagName == 'INPUT') return;
-    console.log("닉네임 상태: ", nickname);
-    console.log("점수", score);
     if(state === SCREEN_STATE.START && (nickname !== undefined && nickname !== "")) {
         showScreen(SCREEN_STATE.PLAYING);
         event.stopImmediatePropagation();
@@ -71,7 +68,6 @@ window.addEventListener('keydown', (event) => {
     }
     if(state === SCREEN_STATE.GAMEOVER) {
         if (performance.now() - gameoverEnteredTime >= waitingTimeToRestart) {
-            console.log("게임오버 화면 진입한 지 몇 초 지남: ", (performance.now() - gameoverEnteredTime));
             if(event.code == "Space") {
                 restartInfo.classList.add("hidden");
                 restartInfo.dataset.timerStarted = "";
@@ -90,7 +86,6 @@ window.addEventListener('keydown', (event) => {
                 showScreen(SCREEN_STATE.PLAYING);
                 lastDropTime = document.timeline.currentTime;
             }
-            console.log('esc 누름: ', state);
             break;
         }
 })

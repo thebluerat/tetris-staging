@@ -27,7 +27,6 @@ function handleInputAction(event) {
         })
         return;
     }
-    console.log('nickname', nickname);
     nicknameInput.blur();
     startingMsg.textContent = nickname + "님.. 아무 키나 누르면 시작합니다...";
 }
