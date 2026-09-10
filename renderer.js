@@ -64,7 +64,7 @@ class Renderer {
                     this.drawCell(row - excludeBufferZone, col, gridSnapshot[row][col]);
                 } else if(cellClearProgress > 0) {
                     this.ctx.globalAlpha = 1 - cellClearProgress;
-                    this.ctx.drawImage(ekuboImage, col * this.cellSize, (row - excludeBufferZone) * this.cellSize, this.cellSize, this.cellSize)
+                    this.ctx.drawImage(ekuboImage, col * this.cellSize, (row - excludeBufferZone) * this.cellSize, imgSize, imgSize)
                 }
             }
         }

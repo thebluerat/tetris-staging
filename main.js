@@ -7,6 +7,7 @@ ekuboImage.onload = () => {
 
 const canvas = document.getElementById('board_canvas');
 const cellSize = 20;
+const imgSize = 30;
 const renderer = new Renderer(canvas, cellSize);
 
 // 블록 미리보기 렌더러
@@ -298,9 +299,9 @@ function moveDown() {
                 gridSnapshot: gridBeforeCleared,
                 patternMap: randomPattern,
                 startTime: clearAnimationStartTime,
-                duration: 400,
-                interval: 30,
-                cellDuration: 130,
+                duration: 2000,
+                interval: 150,
+                cellDuration: 650,
             }; 
         }
         calScoreLineClear(clearedCount);
@@ -340,9 +341,9 @@ function hardDrop() {
                 gridSnapshot: gridBeforeCleared,
                 patternMap: randomPattern,
                 startTime: clearAnimationStartTime,
-                duration: 400,
-                interval: 30,
-                cellDuration: 130,
+                duration: 2000,
+                interval: 150,
+                cellDuration: 650,
             }; 
         }
     calScoreLineClear(clearedCount);
