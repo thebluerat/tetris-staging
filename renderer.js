@@ -90,6 +90,12 @@ class Renderer {
                 const cellDropProgress = Math.min(1, Math.max(0, (elapsed / duration)));
                 const totalDrop = dropDistances.get(row)
                 let currentDropAmount = totalDrop * cellDropProgress;
+
+                this.drawCell(
+                    (row - excludeBufferZone) + currentDropAmount,
+                    col,
+                    gridSnapshot[row][col]
+                );
             }
         }
     }
