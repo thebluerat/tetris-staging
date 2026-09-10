@@ -112,6 +112,13 @@ function draw() {
             lineClearAnimation.interval,
             lineClearAnimation.cellDuration
         );
+        renderer.drawDroppingCellsAfterClear(
+            lineClearAnimation.gridSnapshot,
+            lineClearAnimation.clearedIndices,
+            lineClearAnimation.dropDistances,
+            elapsed,
+            lineClearAnimation.cellDuration
+        );
         if(timePreviousFrame >= clearAnimationEndTime) {
             lineClearAnimation = null;
         }
