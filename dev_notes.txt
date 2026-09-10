@@ -11,6 +11,13 @@ interval은 30 cellDuration은 130
                 cellDuration: 130,
             }; 
 
+const arrClearedIndices = [...clearedIndices];
+const rowDropDistancesMap = new Map();
+for(let i = 0; i < gridSnapshot.length; i++) {
+    let dropDistances = arrClearedIndices.filter(idx => idx > i).length;
+    rowDropDistancesMap.set(i, dropDistances);
+}
+
 
 20260909
 줄 삭제 애니메이션 - 블록이 칸마다 에쿠보로 변하면서 승천하게 할 거임

@@ -259,6 +259,17 @@ function clearRow(position) {
     return {clearedCount, clearedIndices, randomPattern};
 }
 
+// 줄 삭제하면서 위에서 떨어지는 칸 개수 계산하는 함수
+function calcDropDistances(clearedIndices, gridSnapshot) {
+    const arrClearedIndices = [...clearedIndices];
+    const rowDropDistancesMap = new Map();
+    for(let i = 0; i < gridSnapshot.length; i++) {
+        let dropDistances = arrClearedIndices.filter(idx => idx > i).length;
+        rowDropDistancesMap.set(i, dropDistances);
+    }
+    return rowDropDistancesMap;
+}
+
 function moveDown() {
     if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
     const checkingPieceD = {
@@ -294,14 +305,16 @@ function moveDown() {
         const clearAnimationStartTime = timePreviousFrame;
         const {clearedCount, clearedIndices, randomPattern} = clearRow(position);
         if(clearedCount !== 0) {
+            let dropDistances = calcDropDistances(clearedIndices, gridBeforeCleared);
             lineClearAnimation = {
-                clearedIndices: clearedIndices,
+                clearedIndices,
                 gridSnapshot: gridBeforeCleared,
                 patternMap: randomPattern,
                 startTime: clearAnimationStartTime,
                 duration: 2000,
                 interval: 150,
                 cellDuration: 650,
+                dropDistances,
             }; 
         }
         calScoreLineClear(clearedCount);
@@ -336,15 +349,17 @@ function hardDrop() {
     const clearAnimationStartTime = timePreviousFrame;
     const {clearedCount, clearedIndices, randomPattern} = clearRow(hardDropPosition);
     if(clearedCount !== 0) {
-            lineClearAnimation = {
-                clearedIndices: clearedIndices,
-                gridSnapshot: gridBeforeCleared,
-                patternMap: randomPattern,
-                startTime: clearAnimationStartTime,
-                duration: 2000,
-                interval: 150,
-                cellDuration: 650,
-            }; 
+        let dropDistances = calcDropDistances(clearedIndices, gridBeforeCleared);
+        lineClearAnimation = {
+            clearedIndices,
+            gridSnapshot: gridBeforeCleared,
+            patternMap: randomPattern,
+            startTime: clearAnimationStartTime,
+            duration: 2000,
+            interval: 150,
+            cellDuration: 650,
+            dropDistances,
+        }; 
         }
     calScoreLineClear(clearedCount);
     console.log('score: ', score);
