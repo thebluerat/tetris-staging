@@ -1,3 +1,10 @@
+const ekuboImage = new Image();
+ekuboImage.src = './img/img_ekubo.png';
+let ekuboImageLoaded = ekuboImage.complete;
+ekuboImage.onload = () => {
+    ekuboImageLoaded = true;
+};
+
 const canvas = document.getElementById('board_canvas');
 const cellSize = 20;
 const renderer = new Renderer(canvas, cellSize);
