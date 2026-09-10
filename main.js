@@ -111,7 +111,6 @@ function draw() {
     renderer.drawPiece({
         cells: cellsAbsolutePosition(currentPiece),
         color: currentPiece.color,
-        excludeBufferZone: 20,
     });
 }
 function previewDraw() {

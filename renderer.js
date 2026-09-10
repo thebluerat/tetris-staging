@@ -21,7 +21,6 @@ class Renderer {
     }
     
     drawGrid(grid) {
-        const excludeBufferZone = 20;
         for(let row = 20; row < grid.length; row++) {
             for(let col = 0; col < grid[row].length; col++) {
                 if(grid[row][col] !== null) {
@@ -35,7 +34,7 @@ class Renderer {
         for(const cell of piece.cells) {
             const col = cell[0];
             const row = cell[1];
-            this.drawCell(row - piece.excludeBufferZone, col, piece.color);
+            this.drawCell(row - excludeBufferZone, col, piece.color);
         }
     }
     drawPreviewPiece(piece) {
@@ -48,6 +47,7 @@ class Renderer {
             this.drawCell(row + offsets[1], col + offsets[0], piece.color);
         }
     }
+    // 삭제할 블록을 패턴 순서에 따라 이미지로 바꾸고 fadeOut
     drawDisappearingCells(clearedIndices, gridSnapshot, patternMap, elapsed, ekuboImage, interval, cellDuration) {
         for(const row of clearedIndices) {
             for(let col = 0; col < cols; col ++) {
@@ -59,7 +59,15 @@ class Renderer {
                 const cellClearDelayTime = patternOrder * interval;
                 const cellClearElapsedTime = elapsed - cellClearDelayTime;
                 const cellClearProgress = Math.min(1, Math.max(0, (cellClearElapsedTime / cellDuration)));
+                // 삭제할 블록 투명하게 만들기
+                if(cellClearProgress <= 0) {
+                    this.drawCell(row - excludeBufferZone, col, gridSnapshot[row][col]);
+                } else if(cellClearProgress > 0) {
+                    this.ctx.globalAlpha = 1 - cellClearProgress;
+                    this.ctx.drawImage(ekuboImage, col * this.cellSize, (row - excludeBufferZone) * this.cellSize, this.cellSize, this.cellSize)
+                }
             }
         }
+        this.ctx.globalAlpha = 1;
     }
 }
