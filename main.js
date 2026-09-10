@@ -53,6 +53,10 @@ let dropInterval = 1000;
 
 let aniFrame;
 
+// 줄 삭제 애니메이션에 필요한 정보 초깃값
+let lineClearAnimation = null;
+let gridBeforeCleared = [];
+
 showScreen(SCREEN_STATE.START);
 
 // 줄 삭제할 때 점수 계산
@@ -167,11 +171,6 @@ function lockPiece(position, currentPiece) {
         grid[row][col] = currentPiece.color;
     })       
 }
-
-// 줄 삭제 애니메이션 진행 여부 초깃값
-let lineClearAnimation = null;
-
-let gridBeforeCleared = [];
 
 // 지워지는 row마다 패턴(배열)을 짝지어주기
 function getRandomInt(max) {
@@ -292,6 +291,8 @@ function moveDown() {
                 patternMap: randomPattern,
                 startTime: clearAnimationStartTime,
                 duration: 400,
+                interval: 30,
+                cellDuration: 130,
             }; 
         }
         calScoreLineClear(clearedCount);
@@ -332,6 +333,8 @@ function hardDrop() {
                 patternMap: randomPattern,
                 startTime: clearAnimationStartTime,
                 duration: 400,
+                interval: 30,
+                cellDuration: 130,
             }; 
         }
     calScoreLineClear(clearedCount);
