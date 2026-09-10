@@ -87,7 +87,14 @@ function levelUp (cleared) {
 function draw() {
     if(state == 'START' || state == 'GAMEOVER') return;
     renderer.clear();
-    renderer.drawGrid(grid);
+    if(lineClearAnimation) {
+        const clearAnimationEndTime = lineClearAnimation.startTime + lineClearAnimation.duration;
+        if(timePreviousFrame >= endTime) {
+            lineClearAnimation = null;
+        }
+    } else {
+        renderer.drawGrid(grid);
+    }
     renderer.drawPiece({
         cells: cellsAbsolutePosition(currentPiece),
         color: currentPiece.color,
