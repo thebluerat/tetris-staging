@@ -313,9 +313,9 @@ function moveDown() {
                 gridSnapshot: gridBeforeCleared,
                 patternMap: randomPattern,
                 startTime: clearAnimationStartTime,
-                duration: 2000,
-                interval: 150,
-                cellDuration: 650,
+                duration: 600,
+                interval: 45,
+                cellDuration: 195,
                 dropDistances,
             }; 
         }
@@ -355,9 +355,9 @@ function hardDrop() {
             gridSnapshot: gridBeforeCleared,
             patternMap: randomPattern,
             startTime: clearAnimationStartTime,
-            duration: 2000,
-            interval: 150,
-            cellDuration: 650,
+            duration: 600,
+            interval: 45,
+            cellDuration: 195,
             dropDistances,
         }; 
         }

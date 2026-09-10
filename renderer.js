@@ -68,7 +68,7 @@ class Renderer {
                         ekuboImage,
                         col * this.cellSize,
                         // 위로 올라가는 애니메이션 하려고
-                        (row - excludeBufferZone) * this.cellSize - (cellClearProgress * (this.cellSize * 3)),
+                        (row - excludeBufferZone) * this.cellSize - (cellClearProgress * (this.cellSize * 6)),
                         imgSize,
                         imgSize
                     )
