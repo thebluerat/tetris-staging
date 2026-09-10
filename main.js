@@ -128,6 +128,7 @@ function dropTimeUpdate(time = 0) {
     decideDropInterval()
     if(state == 'PLAYING') {
         const deltaTime = time - timePreviousFrame;
+        // timePreviousFrame: 매 프레임마다 갱신되는 최근 시각
         timePreviousFrame = time;
         dropTimeCounter += deltaTime;
         
@@ -152,7 +153,7 @@ function lockPiece(position, currentPiece) {
 }
 
 // 줄 삭제 애니메이션 진행 여부 초깃값
-let lineClearAnimation = null; 
+let lineClearAnimation = null;
 
 let gridBeforeCleared = [];
 
@@ -266,7 +267,17 @@ function moveDown() {
         lockPiece(position, currentPiece);   
         gridBeforeCleared = structuredClone(grid);
         // 꽉 찬 줄 삭제
+        const clearAnimationStartTime = timePreviousFrame;
         const {clearedCount, clearedIndices, randomPattern} = clearRow(position);
+        if(clearedCount !== 0) {
+            lineClearAnimation = {
+                clearedIndices: clearedIndices,
+                gridSnapshot: gridBeforeCleared,
+                patternMap: randomPattern,
+                startTime: clearAnimationStartTime,
+                duration: 400,
+            }; 
+        }
         calScoreLineClear(clearedCount);
         console.log('score: ', score);
         levelUp(clearedCount);
@@ -296,7 +307,17 @@ function hardDrop() {
     lockPiece(hardDropPosition, currentPiece);
     gridBeforeCleared = structuredClone(grid);
     // 꽉 찬 줄 삭제
+    const clearAnimationStartTime = timePreviousFrame;
     const {clearedCount, clearedIndices, randomPattern} = clearRow(hardDropPosition);
+    if(clearedCount !== 0) {
+            lineClearAnimation = {
+                clearedIndices: clearedIndices,
+                gridSnapshot: gridBeforeCleared,
+                patternMap: randomPattern,
+                startTime: clearAnimationStartTime,
+                duration: 400,
+            }; 
+        }
     calScoreLineClear(clearedCount);
     console.log('score: ', score);
     levelUp(clearedCount);
