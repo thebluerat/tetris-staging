@@ -64,10 +64,33 @@ class Renderer {
                     this.drawCell(row - excludeBufferZone, col, gridSnapshot[row][col]);
                 } else if(cellClearProgress > 0) {
                     this.ctx.globalAlpha = 1 - cellClearProgress;
-                    this.ctx.drawImage(ekuboImage, col * this.cellSize, (row - excludeBufferZone) * this.cellSize - (cellClearProgress * (this.cellSize * 3)), imgSize, imgSize)
+                    this.ctx.drawImage(
+                        ekuboImage,
+                        col * this.cellSize,
+                        // 위로 올라가는 애니메이션 하려고
+                        (row - excludeBufferZone) * this.cellSize - (cellClearProgress * (this.cellSize * 3)),
+                        imgSize,
+                        imgSize
+                    )
                 }
             }
         }
         this.ctx.globalAlpha = 1;
+    }
+
+    // 살아남은 칸들 아래로 떨어뜨릴 좌표 계산
+    drawDroppingCellsAfterClear(gridSnapshot, clearedIndices, dropDistances, elapsed, duration) {
+        for(let row = 20; row < gridSnapshot.length; row++) {
+            // 지워진 행은 건너뛰기
+            if(clearedIndices.has(row)) continue;
+
+            for(let col = 0; col < cols; col++) {
+                // 빈 칸 건너뛰기
+                if(gridSnapshot[row][col] === null) continue;
+                const cellDropProgress = Math.min(1, Math.max(0, (elapsed / duration)));
+                const totalDrop = dropDistances.get(row)
+                let currentDropAmount = totalDrop * cellDropProgress;
+            }
+        }
     }
 }
