@@ -1,11 +1,11 @@
 const PIECES = {
-    I: {color : 'skyblue', cells: [[0,1], [1,1], [2,1], [3,1]]},
-    O: {color : 'yellow', cells: [[0,0], [1,0], [0,1], [1,1]]},
-    T: {color : 'purple', cells: [[0,1], [1,1], [2,1], [1,2]]},
-    S: {color : 'green', cells: [[1,1], [2,1], [0,2], [1,2]]},
-    Z: {color : 'red', cells: [[0,1], [1,1], [1,2], [2,2]]},
-    J: {color : 'blue', cells: [[1,0], [1,1], [0,2], [1,2]]},
-    L: {color : 'orange', cells: [[1,0], [1,1], [1,2], [2,2]]},
+    I: {color : '#00F0FF', cells: [[0,1], [1,1], [2,1], [3,1]]},
+    O: {color : '#FFFF33', cells: [[0,0], [1,0], [0,1], [1,1]]},
+    T: {color : '#9400D3', cells: [[0,1], [1,1], [2,1], [1,2]]},
+    S: {color : '#39FF14', cells: [[1,1], [2,1], [0,2], [1,2]]},
+    Z: {color : '#FF1493', cells: [[0,1], [1,1], [1,2], [2,2]]},
+    J: {color : '#1F51FF', cells: [[1,0], [1,1], [0,2], [1,2]]},
+    L: {color : '#FF6700', cells: [[1,0], [1,1], [1,2], [2,2]]},
 };
 
 function blockRenderOffset(piece) {
