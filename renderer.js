@@ -51,8 +51,14 @@ class Renderer {
     drawDisappearingCells(clearedIndices, gridSnapshot, patternMap, elapsed, ekuboImage, interval, cellDuration) {
         for(const row of clearedIndices) {
             for(let col = 0; col < cols; col ++) {
+                // 삭제할 행의
                 const patternRow = patternMap.get(row); 
+                // 각 블록의 삭제 순번
                 const patternOrder = patternRow.indexOf(col);
+                // 각 칸의 삭제 진행도(0~1)
+                const cellClearDelayTime = patternOrder * interval;
+                const cellClearElapsedTime = elapsed - cellClearDelayTime;
+                const cellClearProgress = Math.min(1, Math.max(0, (cellClearElapsedTime / cellDuration)));
             }
         }
     }
