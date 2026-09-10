@@ -177,7 +177,8 @@ function clearPattern(clearedIndices, clearedCount) {
         }
         return shuffledRow;
     }
-    
+    // 1줄 삭제할 때는 왼쪽에서 오른쪽으로, 또는 오른쪽에서 왼쪽으로 블록이 사라지게
+    // 또는 무작위로 사라지게
     if(clearedCount === 1) {
         const randomNum = getRandomInt(3);
         const clearedOneIdx = [...clearedIndices][0];
@@ -188,7 +189,9 @@ function clearPattern(clearedIndices, clearedCount) {
         } else if(randomNum === 2) {
             patternMap.set(clearedOneIdx, shuffleRow(arr));
         }
+        console.log('*****111111111111111******patternMap*************************', patternMap);
         return patternMap;
+    // 2줄 이상 삭제할 때는 왼쪽이나 오른쪽부터 시작해서 사라지는 걸 번갈아가면서
     } else if(clearedCount >= 2) {
         const randomNum = getRandomInt(2);
         const clearedIndicesArr = [...clearedIndices];
@@ -203,6 +206,7 @@ function clearPattern(clearedIndices, clearedCount) {
             }
             i++;
         }
+        console.log('*****222222222222222222222******patternMap*************************', patternMap);
         return patternMap;
     }
 }
@@ -214,9 +218,7 @@ function clearRow(position) {
     // filteredGrid: 꽉 찬 행을 지운 grid
     const filteredGrid = grid.filter((row, idx) => !set.has(idx) || row.some(cell => cell == null));
     const clearedIndices = new Set(grid.map((_, idx) => idx).filter(idx => set.has(idx) && grid[idx].every(cell => cell !== null)));
-    console.log('*****************clearedIndices*****************', clearedIndices);
     const clearedCount = grid.length - filteredGrid.length;
-    clearPattern(clearedIndices, clearedCount);
     if (filteredGrid.length == grid.length) {
         return {
             clearedCount: 0,
@@ -228,7 +230,8 @@ function clearRow(position) {
         grid.length = 0;
         grid.push(...newGrid);
     }
-    return {clearedCount, clearedIndices};
+    const randomPattern = clearPattern(clearedIndices, clearedCount);
+    return {clearedCount, clearedIndices, randomPattern};
 }
 
 function moveDown() {
@@ -263,7 +266,7 @@ function moveDown() {
         lockPiece(position, currentPiece);   
         gridBeforeCleared = structuredClone(grid);
         // 꽉 찬 줄 삭제
-        const {clearedCount, clearedIndices} = clearRow(position);
+        const {clearedCount, clearedIndices, randomPattern} = clearRow(position);
         calScoreLineClear(clearedCount);
         console.log('score: ', score);
         levelUp(clearedCount);
@@ -293,7 +296,7 @@ function hardDrop() {
     lockPiece(hardDropPosition, currentPiece);
     gridBeforeCleared = structuredClone(grid);
     // 꽉 찬 줄 삭제
-    const {clearedCount, clearedIndices} = clearRow(hardDropPosition);
+    const {clearedCount, clearedIndices, randomPattern} = clearRow(hardDropPosition);
     calScoreLineClear(clearedCount);
     console.log('score: ', score);
     levelUp(clearedCount);
