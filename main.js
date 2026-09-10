@@ -100,8 +100,17 @@ function draw() {
     renderer.clear();
     // 줄 삭제될 때
     if(lineClearAnimation) {
-        console.log('lineClearAnimation.startTime, lineClearAnimation.duration', lineClearAnimation.startTime, lineClearAnimation.duration);
         const clearAnimationEndTime = lineClearAnimation.startTime + lineClearAnimation.duration;
+        const elapsed = timePreviousFrame - lineClearAnimation.startTime;
+        renderer.drawDisappearingCells(
+            lineClearAnimation.clearedIndices,
+            lineClearAnimation.gridSnapshot,
+            lineClearAnimation.patternMap,
+            elapsed,
+            ekuboImage,
+            lineClearAnimation.interval,
+            lineClearAnimation.cellDuration
+        );
         if(timePreviousFrame >= clearAnimationEndTime) {
             lineClearAnimation = null;
         }
