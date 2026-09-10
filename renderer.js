@@ -48,7 +48,12 @@ class Renderer {
             this.drawCell(row + offsets[1], col + offsets[0], piece.color);
         }
     }
-    drawDisappearingCells() {
-        
+    drawDisappearingCells(clearedIndices, gridSnapshot, patternMap, elapsed, ekuboImage) {
+        for(const row of clearedIndices) {
+            for(let col = 0; col < cols; col ++) {
+                const patternRow = patternMap.get(row); 
+                const patternOrder = patternRow.indexOf(col);
+            }
+        }
     }
 }
