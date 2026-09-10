@@ -103,6 +103,13 @@ function draw() {
     if(lineClearAnimation) {
         const clearAnimationEndTime = lineClearAnimation.startTime + lineClearAnimation.duration;
         const elapsed = timePreviousFrame - lineClearAnimation.startTime;
+        renderer.drawDroppingCellsAfterClear(
+            lineClearAnimation.gridSnapshot,
+            lineClearAnimation.clearedIndices,
+            lineClearAnimation.dropDistances,
+            elapsed,
+            lineClearAnimation.cellDuration
+        );
         renderer.drawDisappearingCells(
             lineClearAnimation.clearedIndices,
             lineClearAnimation.gridSnapshot,
@@ -110,13 +117,6 @@ function draw() {
             elapsed,
             ekuboImage,
             lineClearAnimation.interval,
-            lineClearAnimation.cellDuration
-        );
-        renderer.drawDroppingCellsAfterClear(
-            lineClearAnimation.gridSnapshot,
-            lineClearAnimation.clearedIndices,
-            lineClearAnimation.dropDistances,
-            elapsed,
             lineClearAnimation.cellDuration
         );
         if(timePreviousFrame >= clearAnimationEndTime) {
