@@ -277,8 +277,8 @@ section {
 }
 .ranking_row .rank { color: #7a7a86; }
 .ranking_row.is_me .rank { color: #ffd400; }
-.ranking_row .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ranking_row .score { text-align: right; }
+.ranking_row .nickname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ranking_row .score { text-align: right; padding-right: 10px;}
 #ranking_toggle {
 	width: 100%;
 	margin-top: 8px;
