@@ -27,7 +27,6 @@ const scoreDisplay = document.getElementById('score');
 const endingLevelDisplay = document.getElementById('ending_level');
 const finalScoreDisplay = document.getElementById('final_score');
 
-let playStartTime = 0;
 let elapsedTime = 0;
 let gameoverEnteredTime = 0;
 let totalPlayTime = 0;
@@ -182,6 +181,7 @@ function dropTimeUpdate(time = 0) {
         dropTimeCounter += deltaTime;
         elapsedTime += deltaTime;
         playingTime(elapsedTime);
+        
         if(dropTimeCounter > dropInterval) {
             moveDown();
             dropTimeCounter = 0;
@@ -392,7 +392,6 @@ function resetGame() {
     endingLevel = 0;
     levelUp(0);
     calScore(0);
-    playStartTime = 0;
     elapsedTime = 0;
     gameoverEnteredTime = 0;
     totalPlayTime = 0;

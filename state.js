@@ -59,11 +59,10 @@ window.addEventListener('keydown', (event) => {
     if(state === SCREEN_STATE.START && (nickname !== undefined && nickname !== "")) {
         showScreen(SCREEN_STATE.PLAYING);
         event.stopImmediatePropagation();
-        playStartTime = performance.now();
         initQueue();
         spawnPiece();
         previewDraw();
-        lastDropTime = document.timeline.currentTime;
+        timePreviousFrame = document.timeline.currentTime;
         aniFrame = requestAnimationFrame(dropTimeUpdate);
         return;
     }
@@ -85,7 +84,7 @@ window.addEventListener('keydown', (event) => {
                 showScreen(SCREEN_STATE.PAUSED);
             } else if (state === SCREEN_STATE.PAUSED) {
                 showScreen(SCREEN_STATE.PLAYING);
-                lastDropTime = document.timeline.currentTime;
+                timePreviousFrame = document.timeline.currentTime;
             }
             break;
         }
