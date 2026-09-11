@@ -113,7 +113,7 @@ window.addEventListener('keydown', (event) => {
 // 모바일: 닉네임 입력 후 화면 아무 데나 탭하면 시작 (키보드의 "아무 키" 입력과 같은 역할)
 function tryStartOnTap(event) {
     if (state !== SCREEN_STATE.START) return;
-    if (event.target.tagName === 'INPUT' || event.target.id === 'nickname_button') return;
+    if (event.target.tagName === 'INPUT') return;
     if (nickname === undefined || nickname === "") return;
     startGame();
 }
