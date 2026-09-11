@@ -42,8 +42,6 @@ function getRanking() {
 // 이번 판 닉네임, 점수, 이번 판인지 여부 localStorage에 저장하고 점수 순으로 정렬 (게임 오버 시점에 한 번만 부름)
 function saveScore(nickname, score, thisRun, totalPlayTime) {
     const ranking = getRanking().map(row => ({...row, thisRun: false}));
-    // JSON.parse(localStorage.getItem('tetrisRanking'))[0].thisRun;
-    
     ranking.push({nickname, score, thisRun, totalPlayTime});
     ranking.sort((a, b) => b.score - a.score);
     localStorage.setItem('tetrisRanking', JSON.stringify(ranking));
