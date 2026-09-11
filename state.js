@@ -43,7 +43,7 @@ function showScreen(newState) {
         SCREEN.playingScreen.classList.remove('active');
         SCREEN.startScreen.classList.remove('active');
         SCREEN.pausedScreen.classList.remove('active');
-        
+
         if(restartInfo.classList.contains("hidden") && !restartInfo.dataset.timerStarted) {
             restartInfo.dataset.timerStarted = "true";
             setTimeout(function() {
@@ -53,6 +53,18 @@ function showScreen(newState) {
         }
     }
 };
+
+// START 화면 -> PLAYING 시작 (키보드 "아무 키"와 모바일 탭 둘 다 이 함수를 호출함)
+function startGame() {
+    showScreen(SCREEN_STATE.PLAYING);
+    initQueue();
+    spawnPiece();
+    previewDraw();
+    timePreviousFrame = document.timeline.currentTime;
+    aniFrame = requestAnimationFrame(dropTimeUpdate);
+}
+
+// 게임오버 화면에서 재시작 (스페이스바 / 탭 공용)
 function tryRestart() {
     if (state !== SCREEN_STATE.GAMEOVER) return;
     if (performance.now() - gameoverEnteredTime < waitingTimeToRestart) return;
@@ -62,6 +74,8 @@ function tryRestart() {
     showScreen(SCREEN_STATE.START);
     nicknameInput.focus();
 }
+
+// 일시정지 토글 (ESC 키 / 일시정지 버튼 공용)
 function togglePause() {
     if(state === SCREEN_STATE.PLAYING) {
         showScreen(SCREEN_STATE.PAUSED);
@@ -74,13 +88,8 @@ function togglePause() {
 window.addEventListener('keydown', (event) => {
     if(event.target.tagName == 'INPUT') return;
     if(state === SCREEN_STATE.START && (nickname !== undefined && nickname !== "")) {
-        showScreen(SCREEN_STATE.PLAYING);
         event.stopImmediatePropagation();
-        initQueue();
-        spawnPiece();
-        previewDraw();
-        timePreviousFrame = document.timeline.currentTime;
-        aniFrame = requestAnimationFrame(dropTimeUpdate);
+        startGame();
         return;
     }
     if(state === SCREEN_STATE.GAMEOVER) {
@@ -93,3 +102,13 @@ window.addEventListener('keydown', (event) => {
         togglePause();
     }
 })
+
+// 모바일: 닉네임 입력 후 화면 아무 데나 탭하면 시작 (키보드의 "아무 키" 입력과 같은 역할)
+function tryStartOnTap(event) {
+    if (state !== SCREEN_STATE.START) return;
+    if (event.target.tagName === 'INPUT' || event.target.id === 'nickname_button') return;
+    if (nickname === undefined || nickname === "") return;
+    startGame();
+}
+document.addEventListener('touchstart', tryStartOnTap);
+document.addEventListener('click', tryStartOnTap);

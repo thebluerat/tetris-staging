@@ -31,7 +31,8 @@ function handleInputAction(event) {
         return;
     }
     nicknameInput.blur();
-    startingMsg.textContent = nickname + "님.. 아무 키나 누르면 시작합니다...";
+    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    startingMsg.textContent = nickname + (isTouchDevice ? "님.. 화면을 탭하면 시작합니다..." : "님.. 아무 키나 누르면 시작합니다...");
 }
 
 nicknameButton.addEventListener("click", handleInputAction);

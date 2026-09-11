@@ -346,7 +346,7 @@ section {
         border: 2px solid #e8e8ec;
         background: rgba(10, 10, 15, 0.55);
         color: #e8e8ec;
-        touch-action: manipulation;
+        touch-action: none;
         user-select: none;
     }
     .touch_btn:active { background: rgba(255, 212, 0, 0.3); }
