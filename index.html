@@ -36,6 +36,10 @@
 	<section id="playing_screen">
 		<div id="boardANDpreview">
 			<div id="level_score">
+				<div id="time_display">
+					<span>TIME</span>
+					<output id="time">0</output>
+				</div>
 				<div id="level_display">
 					<span>LEVEL</span>
 					<output id="level">0</output>
@@ -70,6 +74,7 @@
 				<span>RANK</span>
 				<span>NAME</span>
 				<span>SCORE</span>
+				<span>TIME</span>
 			</div>
 			<div id="ranking_list"></div>
 			<button id="ranking_toggle" class="hidden">···</button>
@@ -82,10 +87,6 @@
 			<div id="finalscore_display">
 				<span>SCORE</span>
 				<output id="final_score">0</output>
-			</div>
-			<div id="time_display">
-				<span>TIME</span>
-				<output id="playing_time">0</output>
 			</div>
 		</div>
 		<div id="restart" class="hidden">

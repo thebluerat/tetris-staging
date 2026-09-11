@@ -125,11 +125,11 @@ section {
     color: #e8e8ec;
     font-size: 10px;
 }
-#level_display span, #score_display span {
+#level_display span, #score_display span, #time_display span {
     color: #ffd400;
     letter-spacing: 1px;
 }
-#level_display output, #score_display output {
+#level_display output, #score_display output,  #time_display output {
     display: block;
     margin-top: 4px;
     font-size: 14px;
@@ -234,13 +234,17 @@ section {
 }
 #ranking_header {
 	display: grid;
-	grid-template-columns: 44px 1fr 74px;
+	grid-template-columns: 1fr 1fr 2fr 1fr;
 	gap: 4px;
 	font-size: 9px;
+	text-align: center;
 	color: #7a7a86;
 	border-bottom: 2px solid #35353f;
 	padding-bottom: 8px;
 	margin-bottom: 4px;
+}
+#ranking_header span {
+	text-align: center;
 }
 #ranking_list {
 	display: flex;
@@ -254,10 +258,11 @@ section {
 }
 .ranking_row {
 	display: grid;
-	grid-template-columns: 44px 1fr 74px;
+	grid-template-columns: 1fr 1fr 2fr 1fr;
 	gap: 4px;
 	align-items: center;
 	font-size: 11px;
+	text-align: center;
 	padding: 8px 4px;
 	border: 2px solid transparent;
 	box-sizing: border-box;

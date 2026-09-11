@@ -19,15 +19,18 @@ const subPreviewCanvas = document.getElementById('sub_next_preview');
 const subPreviewCellSize = 5;
 const subPreviewRenderer = new Renderer(subPreviewCanvas, subPreviewCellSize);
 
-let gameoverEnteredTime = 0;
-
 let isSoftDropping = false;
 
 const levelDisplay = document.getElementById('level');
+const timeDisplay = document.getElementById('time');
 const scoreDisplay = document.getElementById('score');
 const endingLevelDisplay = document.getElementById('ending_level');
 const finalScoreDisplay = document.getElementById('final_score');
 
+let playStartTime = 0;
+let elapsedTime = 0;
+let gameoverEnteredTime = 0;
+let totalPlayTime = 0;
 let score = 0;
 let level = 0;
 let finalScore = 0;
@@ -77,6 +80,17 @@ function calScore(expression) {
     scoreDisplay.textContent = score;
 }
 
+function MStoMMSS(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    const formattedTime = `${minutes}:${seconds}`
+    return formattedTime;
+}
+function playingTime(elapsedTime) { 
+    elapsedTime = MStoMMSS(elapsedTime);
+    timeDisplay.textContent = elapsedTime;
+};
 
 function FPStoMS(fPS) {
     let ms = (1000 / 60) * fPS;
@@ -166,7 +180,8 @@ function dropTimeUpdate(time = 0) {
         // timePreviousFrame: 매 프레임마다 갱신되는 최근 시각
         timePreviousFrame = time;
         dropTimeCounter += deltaTime;
-        
+        elapsedTime += deltaTime;
+        playingTime(elapsedTime);
         if(dropTimeCounter > dropInterval) {
             moveDown();
             dropTimeCounter = 0;
@@ -292,12 +307,13 @@ function moveDown() {
         if (position.every(cell => cell[1] < 20)) {
             endingLevel = level;
             finalScore = score;
+            totalPlayTime = MStoMMSS(elapsedTime);
             endingLevelDisplay.textContent = endingLevel;
             finalScoreDisplay.textContent = finalScore;
-            const allRows = saveScore(nickname, finalScore, true);
+            gameoverEnteredTime = performance.now();
+            const allRows = saveScore(nickname, finalScore, true, totalPlayTime);
             renderRanking(allRows);
             showScreen(SCREEN_STATE.GAMEOVER);
-            gameoverEnteredTime = performance.now();
             return;
         }
         // 블록 고정
@@ -376,7 +392,10 @@ function resetGame() {
     endingLevel = 0;
     levelUp(0);
     calScore(0);
+    playStartTime = 0;
+    elapsedTime = 0;
     gameoverEnteredTime = 0;
+    totalPlayTime = 0;
     timePreviousFrame = 0;
     dropInterval = 1000;
     dropTimeCounter = 0;

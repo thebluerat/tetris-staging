@@ -135,12 +135,13 @@ function spawnPiece() {
     } else {
         endingLevel = level;
         finalScore = score;
+        totalPlayTime = MStoMMSS(elapsedTime);
         endingLevelDisplay.textContent = endingLevel;
         finalScoreDisplay.textContent = finalScore;
-        const allRows = saveScore(nickname, finalScore, true);
+        gameoverEnteredTime = performance.now();
+        const allRows = saveScore(nickname, finalScore, true, totalPlayTime);
         renderRanking(allRows);
         showScreen(SCREEN_STATE.GAMEOVER);
-        gameoverEnteredTime = performance.now();
         return;
     }
 };

@@ -40,11 +40,11 @@ function getRanking() {
     return ranking ? JSON.parse(ranking) : [];
 }
 // 이번 판 닉네임, 점수, 이번 판인지 여부 localStorage에 저장하고 점수 순으로 정렬 (게임 오버 시점에 한 번만 부름)
-function saveScore(nickname, score, thisRun) {
+function saveScore(nickname, score, thisRun, totalPlayTime) {
     const ranking = getRanking().map(row => ({...row, thisRun: false}));
     // JSON.parse(localStorage.getItem('tetrisRanking'))[0].thisRun;
     
-    ranking.push({nickname, score, thisRun});
+    ranking.push({nickname, score, thisRun, totalPlayTime});
     ranking.sort((a, b) => b.score - a.score);
     localStorage.setItem('tetrisRanking', JSON.stringify(ranking));
     return ranking;
@@ -61,6 +61,7 @@ function renderRanking(allRows) {
 			<span class="rank">${String(idx + 1).padStart(2, '0')}</span>
 			<span class="nickname">${row.nickname}</span>
 			<span class="score">${row.score.toLocaleString()}</span>
+            <span class="time">${row.totalPlayTime}</span>
 		`;
 		rankingList.appendChild(div);
 	});

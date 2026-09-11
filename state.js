@@ -59,6 +59,7 @@ window.addEventListener('keydown', (event) => {
     if(state === SCREEN_STATE.START && (nickname !== undefined && nickname !== "")) {
         showScreen(SCREEN_STATE.PLAYING);
         event.stopImmediatePropagation();
+        playStartTime = performance.now();
         initQueue();
         spawnPiece();
         previewDraw();
