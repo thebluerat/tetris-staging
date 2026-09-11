@@ -307,7 +307,7 @@ function moveDown() {
         if (position.every(cell => cell[1] < 20)) {
             endingLevel = level;
             finalScore = score;
-            totalPlayTime = MStoMMSS(elapsedTime);
+            totalPlayTime = elapsedTime;
             endingLevelDisplay.textContent = endingLevel;
             finalScoreDisplay.textContent = finalScore;
             gameoverEnteredTime = performance.now();

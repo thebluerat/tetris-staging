@@ -61,7 +61,7 @@ function renderRanking(allRows) {
 			<span class="rank">${String(idx + 1).padStart(2, '0')}</span>
 			<span class="nickname">${row.nickname}</span>
 			<span class="score">${row.score.toLocaleString()}</span>
-            <span class="time">${row.totalPlayTime}</span>
+            <span class="time">${MStoMMSS(row.totalPlayTime)}</span>
 		`;
 		rankingList.appendChild(div);
 	});
