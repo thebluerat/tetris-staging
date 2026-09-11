@@ -18,6 +18,12 @@ const restartInfo = document.getElementById('restart');
 
 const waitingTimeToRestart = 3000;
 
+// 터치 기기 여부를 한 곳에서 판정해서, CSS 미디어쿼리 대신 JS로 직접 텍스트 표시를 결정
+// (개발자도구 모바일 흉내 등 환경에 따라 hover/pointer 미디어쿼리 판정이 애매할 수 있어서 더 확실한 방식으로)
+const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+document.querySelector('.restart_text_keyboard').style.display = isTouchDevice ? 'none' : 'inline';
+document.querySelector('.restart_text_touch').style.display = isTouchDevice ? 'inline' : 'none';
+
 // 화면 전환
 function showScreen(newState) {
     state = newState;
@@ -72,7 +78,8 @@ function tryRestart() {
     restartInfo.dataset.timerStarted = "";
     resetGame();
     showScreen(SCREEN_STATE.START);
-    nicknameInput.focus();
+    // 모바일에서는 자동 포커스 시 키보드가 화면을 덮어버려서 재시작이 안 된 것처럼 보이니, 데스크톱에서만 자동 포커스
+    if (!isTouchDevice) nicknameInput.focus();
 }
 
 // 일시정지 토글 (ESC 키 / 일시정지 버튼 공용)

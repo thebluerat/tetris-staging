@@ -38,3 +38,9 @@ restartInfo.addEventListener('touchstart', (event) => {
     tryRestart();
 });
 restartInfo.addEventListener('click', tryRestart);
+
+SCREEN.pausedScreen.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    togglePause();
+});
+SCREEN.pausedScreen.addEventListener('click', togglePause);
