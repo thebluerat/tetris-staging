@@ -185,6 +185,26 @@ section {
     background-color: rgba(10, 10, 15, 0.85);
 	z-index: 1;
 }
+#pause_button {
+    display: none;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 3;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #e8e8ec;
+    color: #ffd400;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px; /* 이미지가 버튼 테두리에 딱 붙지 않게 여백 */
+}
+#pause_button img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
 
 /* gameover_screen */
 #my_record {
