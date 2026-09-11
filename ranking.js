@@ -88,7 +88,7 @@ function renderRanking(allRows) {
 
     const myIndex = allRows.findIndex(row => row.id === currentRunRecordId);
     const myRank = myIndex + 1;
-    if (myIndex !== -1 && myRank > topCountTen) {
+    if (myIndex !== -1 && myRank > topCountTen && !isTouchDevice) {
         myRecord.textContent = `Finished ${myRank}th with ${allRows[myIndex].score.toLocaleString()} pts!`;
         myRecord.classList.remove('hidden');
     } else {
