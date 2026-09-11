@@ -115,6 +115,7 @@ function draw() {
     if(lineClearAnimation) {
         const clearAnimationEndTime = lineClearAnimation.startTime + lineClearAnimation.duration;
         const elapsed = timePreviousFrame - lineClearAnimation.startTime;
+        renderer.drawClearFlash(elapsed, lineClearAnimation.duration, ekuboImage);
         renderer.drawDroppingCellsAfterClear(
             lineClearAnimation.gridSnapshot,
             lineClearAnimation.clearedIndices,
