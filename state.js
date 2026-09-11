@@ -53,6 +53,23 @@ function showScreen(newState) {
         }
     }
 };
+function tryRestart() {
+    if (state !== SCREEN_STATE.GAMEOVER) return;
+    if (performance.now() - gameoverEnteredTime < waitingTimeToRestart) return;
+    restartInfo.classList.add("hidden");
+    restartInfo.dataset.timerStarted = "";
+    resetGame();
+    showScreen(SCREEN_STATE.START);
+    nicknameInput.focus();
+}
+function togglePause() {
+    if(state === SCREEN_STATE.PLAYING) {
+        showScreen(SCREEN_STATE.PAUSED);
+    } else if (state === SCREEN_STATE.PAUSED) {
+        showScreen(SCREEN_STATE.PLAYING);
+        timePreviousFrame = document.timeline.currentTime;
+    }
+}
 
 window.addEventListener('keydown', (event) => {
     if(event.target.tagName == 'INPUT') return;
@@ -67,27 +84,12 @@ window.addEventListener('keydown', (event) => {
         return;
     }
     if(state === SCREEN_STATE.GAMEOVER) {
-        if (performance.now() - gameoverEnteredTime >= waitingTimeToRestart) {
-            if(event.code == "Space") {
-                restartInfo.classList.add("hidden");
-                restartInfo.dataset.timerStarted = "";
-                resetGame();
-                showScreen(SCREEN_STATE.START);
-                event.preventDefault();
-                nicknameInput.focus();
-            }
+        if(event.code == "Space") {
+            event.preventDefault();
+            tryRestart();
         }
     }
-    switch (event.code) {
-        case "Escape":
-            if(state === SCREEN_STATE.PLAYING) {
-                showScreen(SCREEN_STATE.PAUSED);
-            } else if (state === SCREEN_STATE.PAUSED) {
-                showScreen(SCREEN_STATE.PLAYING);
-                timePreviousFrame = document.timeline.currentTime;
-            }
-            break;
-        }
+    if(event.code === "Escape") {
+        togglePause();
+    }
 })
-
-

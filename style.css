@@ -302,3 +302,67 @@ section {
 	letter-spacing: 1px;
 	animation: blink 1s steps(1) infinite;
 }
+
+/* ===== 모바일 터치 조작 ===== */
+#pause_button {
+    display: none;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 3;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #e8e8ec;
+    background: rgba(10, 10, 15, 0.7);
+    color: #ffd400;
+    font-size: 16px;
+    cursor: pointer;
+}
+#touch_controls { display: none; }
+
+@media (hover: none) and (pointer: coarse) {
+    #pause_button { display: block; }
+    #playing_screen {
+        position: relative;
+        flex-direction: column;
+        gap: 12px;
+        touch-action: none;
+    }
+    #touch_controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 552px;
+        padding: 0 12px;
+        box-sizing: border-box;
+        gap: 8px;
+    }
+    #touch_move, #touch_rotate, #touch_drop { display: flex; gap: 8px; }
+    .touch_btn {
+        width: 52px;
+        height: 52px;
+        font-size: 20px;
+        border: 2px solid #e8e8ec;
+        background: rgba(10, 10, 15, 0.55);
+        color: #e8e8ec;
+        touch-action: manipulation;
+        user-select: none;
+    }
+    .touch_btn:active { background: rgba(255, 212, 0, 0.3); }
+	#boardANDpreview {
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 10px;
+        padding: 10px;
+    }
+    #level_score {
+        flex-direction: row;
+        justify-content: space-around;
+        flex-basis: 100%;
+        order: -1;
+    }
+	.restart_text_keyboard { display: none; }
+    .restart_text_touch { display: inline; }
+    #restart { cursor: pointer; }
+}

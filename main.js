@@ -417,113 +417,104 @@ function resetGame() {
 }
 
 
+function moveLeft() {
+    const checkingPieceL = { ...currentPiece, left: currentPiece.left - 1 };
+    const checkingCellsL = cellsAbsolutePosition(checkingPieceL);
+    if(isValidPosition(checkingCellsL) && isEmptySpace(checkingCellsL, grid)){
+        currentPiece.left = checkingPieceL.left;
+    }
+    draw();
+}
+function moveRight() {
+    const checkingPieceR = { ...currentPiece, left: currentPiece.left + 1 };
+    const checkingCellsR = cellsAbsolutePosition(checkingPieceR);
+    if(isValidPosition(checkingCellsR) && isEmptySpace(checkingCellsR, grid)){
+        currentPiece.left = checkingPieceR.left;
+    }
+    draw();
+}
+function rotateCW() {
+    const nextDirection = rotationOrder[(rotationOrder.indexOf(currentPiece.direction) + 1) % rotationLength];
+    const checkingPieceCW = {
+        ...currentPiece,
+        direction: nextDirection,
+        cells: RotatedShapes[currentPiece.blockName][nextDirection],
+    }
+    const checkingCellsCW = cellsAbsolutePosition(checkingPieceCW);
+    if(isValidPosition(checkingCellsCW) && isEmptySpace(checkingCellsCW, grid)){
+        currentPiece.direction = nextDirection;
+        currentPiece.cells = checkingPieceCW.cells;
+    } else {
+        let kickTable = WallKicks_JLSTZ;
+        if(checkingPieceCW.blockName == 'I') kickTable = WallKicks_I;
+        for (let i = 0; i < 5; i++) {
+            const [deltaLeft, deltaTop] = kickTable[currentPiece.direction][i];
+            const kickedCells = checkingCellsCW.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
+            if (isValidPosition(kickedCells) && isEmptySpace(kickedCells, grid)) {
+                currentPiece.cells = checkingPieceCW.cells;
+                currentPiece.direction = nextDirection;
+                currentPiece.left += deltaLeft;
+                currentPiece.top += deltaTop;
+                break;
+            }
+        }
+    }
+    draw();
+}
+function rotateCCW() {
+    const ACWnextDirection = rotationOrder[((rotationOrder.indexOf(currentPiece.direction) - 1) % rotationLength + 4) % 4];
+    let checkingPieceACW = {
+        ...currentPiece,
+        direction: ACWnextDirection,
+        cells: RotatedShapes[currentPiece.blockName][ACWnextDirection],
+    }
+    const checkingCellsACW = cellsAbsolutePosition(checkingPieceACW);
+    if(isValidPosition(checkingCellsACW) && isEmptySpace(checkingCellsACW, grid)){
+        currentPiece.direction = ACWnextDirection;
+        currentPiece.cells = checkingPieceACW.cells;
+    } else {
+        let kickTable = WallKicks_JLSTZ_ACW;
+        if(checkingPieceACW.blockName == 'I') kickTable = WallKicks_I_ACW;
+        for (let i = 0; i < 5; i++) {
+            const [deltaLeft, deltaTop] = kickTable[currentPiece.direction][i];
+            const kickedCells = checkingCellsACW.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
+            if (isValidPosition(kickedCells) && isEmptySpace(kickedCells, grid)) {
+                currentPiece.cells = checkingPieceACW.cells;
+                currentPiece.direction = ACWnextDirection;
+                currentPiece.left += deltaLeft;
+                currentPiece.top += deltaTop;
+                break;
+            }
+        }
+    }
+    draw();
+}
+function startSoftDrop() {
+    if(state !== 'PLAYING') return;
+    isSoftDropping = true;
+    dropTimeCounter = 0;
+    draw();
+}
+function stopSoftDrop() {
+    isSoftDropping = false;
+    draw();
+}
+
 window.addEventListener('keydown', (event) => {
     if(state !== 'PLAYING') return; 
     switch (event.code) {
-        case "ArrowLeft": 
-            // currentPiece.left - 1한 값 새로 만들어보기
-            const checkingPieceL = {
-                ...currentPiece,
-                left: currentPiece.left - 1
-            };
-            // currentPiece.left - 1하면 어떻게 될지 좌표 계산해보기
-            const checkingCellsL = cellsAbsolutePosition(checkingPieceL);
-            if(isValidPosition(checkingCellsL) && isEmptySpace(checkingCellsL, grid)){
-                currentPiece.left = checkingPieceL.left;
-            }
-        break;
-        case "ArrowRight":
-            const checkingPieceR = {
-                ...currentPiece,
-                left: currentPiece.left + 1
-            };
-            const checkingCellsR = cellsAbsolutePosition(checkingPieceR);
-            if(isValidPosition(checkingCellsR) && isEmptySpace(checkingCellsR, grid)){
-                currentPiece.left = checkingPieceR.left;
-            }
-        break;
-        case "ArrowDown":
-            isSoftDropping = true;
-            dropTimeCounter = 0;
-            draw();
-        break; 
-        case "KeyX":
-            const nextDirection = rotationOrder[(rotationOrder.indexOf(currentPiece.direction) + 1) % rotationLength];
-            const checkingPieceCW = {
-                ...currentPiece,
-                direction: nextDirection,
-                cells: RotatedShapes[currentPiece.blockName][nextDirection],
-            }
-            const checkingCellsCW = cellsAbsolutePosition(checkingPieceCW);
-
-            if(isValidPosition(checkingCellsCW) && isEmptySpace(checkingCellsCW, grid)){
-                currentPiece.direction = nextDirection;
-                currentPiece.cells = checkingPieceCW.cells;
-            } 
-            // 회전 벽에 막힐 때 벽차기
-            else {
-                let kickTable = WallKicks_JLSTZ;
-                if(checkingPieceCW.blockName == 'I') {
-                    kickTable = WallKicks_I;
-                }
-                for (let i = 0; i < 5; i++) {
-                    const [deltaLeft, deltaTop] = kickTable[currentPiece.direction][i];
-                    const kickedCells = checkingCellsCW.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
-                    
-                    if (isValidPosition(kickedCells) && isEmptySpace(kickedCells, grid)) {
-                        currentPiece.cells = checkingPieceCW.cells;
-                        currentPiece.direction = nextDirection;
-                        currentPiece.left = currentPiece.left + deltaLeft;
-                        currentPiece.top = currentPiece.top + deltaTop;
-                        break;
-                    }
-                }
-            };
-            draw();
-        break;
-        case "KeyZ":
-            const ACWnextDirection = rotationOrder[((rotationOrder.indexOf(currentPiece.direction) - 1) % rotationLength + 4) % 4];
-            let checkingPieceACW = {
-                ...currentPiece,
-                direction: ACWnextDirection,
-                cells: RotatedShapes[currentPiece.blockName][ACWnextDirection],
-            }
-            const checkingCellsACW = cellsAbsolutePosition(checkingPieceACW);
-
-            if(isValidPosition(checkingCellsACW) && isEmptySpace(checkingCellsACW, grid)){
-                currentPiece.direction = ACWnextDirection;
-                currentPiece.cells = checkingPieceACW.cells;
-            } 
-            // 회전 벽에 막힐 때 벽차기
-            else {
-                let kickTable = WallKicks_JLSTZ_ACW;
-                if(checkingPieceACW.blockName == 'I') {
-                    kickTable = WallKicks_I_ACW;
-                }
-                for (let i = 0; i < 5; i++) {
-                    const [deltaLeft, deltaTop] = kickTable[currentPiece.direction][i];
-                    const kickedCells = checkingCellsACW.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
-                    
-                    if (isValidPosition(kickedCells) && isEmptySpace(kickedCells, grid)) {
-                        currentPiece.cells = checkingPieceACW.cells;
-                        currentPiece.direction = ACWnextDirection;
-                        currentPiece.left = currentPiece.left + deltaLeft;
-                        currentPiece.top = currentPiece.top + deltaTop;
-                        break;
-                    }
-                }
-            };
-            draw();
-        break;
-        case "Space":
-            hardDrop();
-        break;
+        case "ArrowLeft": moveLeft(); break;
+        case "ArrowRight": moveRight(); break;
+        case "ArrowDown": startSoftDrop(); break;
+        case "KeyX": rotateCW(); break;
+        case "KeyZ": rotateCCW(); break;
+        case "Space": hardDrop(); break;
     }
     draw();
 })
 window.addEventListener('keyup', (event) => {
     if(event.key == "ArrowDown" || event.key == "Space") {
-        isSoftDropping = false;
+        stopSoftDrop();
     }
     draw();
 })

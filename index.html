@@ -34,6 +34,7 @@
 		</div>
 	</section>
 	<section id="playing_screen">
+		<button id="pause_button" aria-label="일시정지">⏸</button>
 		<div id="boardANDpreview">
 			<div id="level_score">
 				<div id="time_display">
@@ -57,6 +58,20 @@
 				<canvas id="sub_next_preview" width="40" height="40"></canvas>
 			</div>
 		</div>
+		 <div id="touch_controls">
+        <div id="touch_move">
+            <button id="btn_left" class="touch_btn">◀</button>
+            <button id="btn_right" class="touch_btn">▶</button>
+        </div>
+        <div id="touch_rotate">
+            <button id="btn_rotate_ccw" class="touch_btn">↺</button>
+            <button id="btn_rotate_cw" class="touch_btn">↻</button>
+        </div>
+        <div id="touch_drop">
+            <button id="btn_soft_drop" class="touch_btn">▼</button>
+            <button id="btn_hard_drop" class="touch_btn">⤓</button>
+        </div>
+    </div>
 	</section>
 	<section id="paused_screen">
 		<span class="subject">
@@ -90,7 +105,8 @@
 			</div>
 		</div>
 		<div id="restart" class="hidden">
-			press SPACE BAR to restart
+			<span class="restart_text_keyboard">press SPACE BAR to restart</span>
+			<span class="restart_text_touch">탭해서 재시작</span>
 		</div>
 	</section>
 	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -101,5 +117,6 @@
 	<script src="./board.js"></script>
 	<script src="./piece.js"></script>
 	<script src="./main.js"></script>
+	<script src="./touchControls.js"></script>
 </body>
 </html>
