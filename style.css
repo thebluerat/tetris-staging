@@ -363,6 +363,6 @@ section {
         order: -1;
     }
 	.restart_text_keyboard { display: none; }
-    .restart_text_touch { display: inline; }
+    .restart_text_touch { display: inline; font-size: 2rem;}
     #restart { cursor: pointer; }
 }
