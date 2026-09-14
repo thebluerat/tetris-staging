@@ -109,7 +109,7 @@ class Renderer {
         let currentY;
         const outProgress = (elapsed - holdEnd) / (duration - holdEnd);
         if (elapsed <= fadeInEnd) {
-            alpha = elapsed / fadeInEnd;
+            alpha = easeInOutCubic(elapsed / fadeInEnd);
             currentX = x + (endX - x) * alpha;
             currentY = y + (endY - y) * alpha;
         } else if(elapsed <= holdEnd) {
@@ -118,8 +118,8 @@ class Renderer {
             currentY = endY;
         } else {
             alpha = 1 - outProgress;
-            currentX = endX + (x - endX) * outProgress;
-            currentY = endY + (y - endY) * outProgress;
+            currentX = endX + (x - endX) * easeInOutCubic(outProgress);
+            currentY = endY + (y - endY) * easeInOutCubic(outProgress);
         }
         alpha = Math.min(1, Math.max(0, alpha));
         

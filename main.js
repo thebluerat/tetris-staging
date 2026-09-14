@@ -131,7 +131,11 @@ function levelUp (cleared) {
     level = Math.floor(clearedRowsCounter / 10);
     levelDisplay.textContent = level;
 }
-
+function easeInOutCubic(t) {
+    return t < 0.5
+        ? 4 * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
 function draw() {
     if(state == 'START' || state == 'GAMEOVER') return;
     renderer.clear();
