@@ -5,6 +5,10 @@ ekuboImage.onload = () => {
     ekuboImageLoaded = true;
 };
 
+// const levelImgSets = {
+
+// }
+
 const canvas = document.getElementById('board_canvas');
 const cellSize = 20;
 const imgSize = 30;
