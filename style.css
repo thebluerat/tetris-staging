@@ -193,7 +193,6 @@ section {
     z-index: 3;
     width: 40px;
     height: 40px;
-    border: 2px solid #e8e8ec;
     color: #ffd400;
     font-size: 16px;
     cursor: pointer;
@@ -332,8 +331,7 @@ section {
     z-index: 3;
     width: 40px;
     height: 40px;
-    border: 2px solid #e8e8ec;
-    background: rgba(10, 10, 15, 0.7);
+    background: rgba(10, 10, 15, 0);
     color: #ffd400;
     font-size: 16px;
     cursor: pointer;
