@@ -1,13 +1,33 @@
-const ekuboImage = new Image();
-ekuboImage.src = './img/img_ekubo.png';
-let ekuboImageLoaded = ekuboImage.complete;
-ekuboImage.onload = () => {
-    ekuboImageLoaded = true;
-};
+// const ekuboImage = new Image();
+// ekuboImage.src = './img/img_ekubo.png';
+// let ekuboImageLoaded = ekuboImage.complete;
+// ekuboImage.onload = () => {
+//     ekuboImageLoaded = true;
+// };
 
-// const levelImgSets = {
+const levelImgSets = [
+    ['ekubo_0', 'ekubo_1', 'ekubo_2', 'ekubo_3', 'ekubo_4', 'ekubo_5', 'ekubo_6', 'ekubo_7', 'ekubo_8'],
+    ['mob_0']
+];
+const gameImgs = [];
+const gameImgsLoaded = [];
 
-// }
+for(const [level, names] of levelImgSets.entries()) {
+    gameImgs[level] = [];
+    gameImgsLoaded[level] = [];
+
+    for(const [index, name] of names.entries()) {
+        const img = new Image();
+        img.src = `./img/img_${name}.png`;
+
+        gameImgsLoaded[level][index] = img.complete;
+        img.onload = () => {
+            gameImgsLoaded[level][index] = true;
+        };
+
+        gameImgs[level].push(img);
+    }
+}
 
 const canvas = document.getElementById('board_canvas');
 const cellSize = 20;
@@ -119,7 +139,7 @@ function draw() {
     if(lineClearAnimation) {
         const clearAnimationEndTime = lineClearAnimation.startTime + lineClearAnimation.duration;
         const elapsed = timePreviousFrame - lineClearAnimation.startTime;
-        renderer.drawClearFlash(elapsed, lineClearAnimation.duration, ekuboImage);
+        renderer.drawClearFlash(elapsed, lineClearAnimation.duration, lineClearAnimation.selectedImg);
         renderer.drawDroppingCellsAfterClear(
             lineClearAnimation.gridSnapshot,
             lineClearAnimation.clearedIndices,
@@ -132,7 +152,7 @@ function draw() {
             lineClearAnimation.gridSnapshot,
             lineClearAnimation.patternMap,
             elapsed,
-            ekuboImage,
+            lineClearAnimation.selectedImg,
             lineClearAnimation.interval,
             lineClearAnimation.cellDuration
         );
@@ -332,16 +352,25 @@ function moveDown() {
         const {clearedCount, clearedIndices, randomPattern} = clearRow(position);
         if(clearedCount !== 0) {
             let dropDistances = calcDropDistances(clearedIndices, gridBeforeCleared);
-            lineClearAnimation = {
-                clearedIndices,
-                gridSnapshot: gridBeforeCleared,
-                patternMap: randomPattern,
-                startTime: clearAnimationStartTime,
-                duration: 800,
-                interval: 45,
-                cellDuration: 600,
-                dropDistances,
-            }; 
+            const imgLevel = level >= gameImgs.length ? gameImgs.length - 1 : level;
+            const levelImgPool = gameImgs[imgLevel];
+            const levelImgLoadedPool = gameImgsLoaded[imgLevel];
+            const randomIndex = Math.floor(Math.random() * levelImgPool.length);
+            if(levelImgLoadedPool[randomIndex]) {
+                const selectedImg = levelImgPool[randomIndex];
+
+                lineClearAnimation = {
+                        selectedImg,
+                        clearedIndices,
+                        gridSnapshot: gridBeforeCleared,
+                    patternMap: randomPattern,
+                    startTime: clearAnimationStartTime,
+                    duration: 800,
+                    interval: 45,
+                    cellDuration: 600,
+                    dropDistances,
+                }; 
+            }
         }
         calScoreLineClear(clearedCount);
         levelUp(clearedCount);
@@ -374,16 +403,25 @@ function hardDrop() {
     const {clearedCount, clearedIndices, randomPattern} = clearRow(hardDropPosition);
     if(clearedCount !== 0) {
         let dropDistances = calcDropDistances(clearedIndices, gridBeforeCleared);
-        lineClearAnimation = {
-            clearedIndices,
-            gridSnapshot: gridBeforeCleared,
-            patternMap: randomPattern,
-            startTime: clearAnimationStartTime,
-            duration: 800,
-            interval: 45,
-            cellDuration: 600,
-            dropDistances,
-        }; 
+        const imgLevel = level >= gameImgs.length ? gameImgs.length - 1 : level;
+        const levelImgPool = gameImgs[imgLevel];
+        const levelImgLoadedPool = gameImgsLoaded[imgLevel];
+        const randomIndex = Math.floor(Math.random() * levelImgPool.length);
+            if(levelImgLoadedPool[randomIndex]) {
+                const selectedImg = levelImgPool[randomIndex];
+        
+                lineClearAnimation = {
+                    selectedImg,
+                    clearedIndices,
+                    gridSnapshot: gridBeforeCleared,
+                    patternMap: randomPattern,
+                    startTime: clearAnimationStartTime,
+                    duration: 800,
+                    interval: 45,
+                    cellDuration: 600,
+                    dropDistances,
+                }; 
+            }
         }
     calScoreLineClear(clearedCount);
     levelUp(clearedCount);
