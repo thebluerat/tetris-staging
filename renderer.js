@@ -100,7 +100,7 @@ class Renderer {
         }
     }
     // 줄 삭제 시 배경에 반짝이는 플래시 이미지
-    drawClearFlash(elapsed, duration, ekuboImage) {
+    drawClearFlash(elapsed, duration, flashImage) {
         const fadeInEnd = duration * 0.15; // 전체 시간의 앞 15% 동안 빠르게 나타남
         let alpha;
         if (elapsed <= fadeInEnd) {
@@ -111,7 +111,7 @@ class Renderer {
         alpha = Math.min(1, Math.max(0, alpha));
 
         this.ctx.globalAlpha = alpha;
-        this.ctx.drawImage(ekuboImage, 0, 0, this.width, this.height);
+        this.ctx.drawImage(flashImage, 0, 0, this.width, this.height);
         this.ctx.globalAlpha = 1;
     }
 }
