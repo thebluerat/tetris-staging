@@ -7,7 +7,7 @@
 
 const levelImgSets = [
     ['ekubo_0', 'ekubo_1', 'ekubo_2', 'ekubo_3', 'ekubo_4', 'ekubo_5', 'ekubo_6', 'ekubo_7', 'ekubo_8'],
-    ['mob_0']
+    // ['mob_0']
 ];
 const gameImgs = [];
 const gameImgsLoaded = [];
