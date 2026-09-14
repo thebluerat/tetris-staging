@@ -99,19 +99,38 @@ class Renderer {
             }
         }
     }
-    // 줄 삭제 시 배경에 반짝이는 플래시 이미지
-    drawClearFlash(elapsed, duration, flashImage) {
-        const fadeInEnd = duration * 0.15; // 전체 시간의 앞 15% 동안 빠르게 나타남
+    // 줄 삭제 시 배경에 지나가는 플래시 이미지
+    drawClearFlash(elapsed, duration, flashImage, x, y, endX, endY, width, height) {
+        const fadeInEnd = duration * 0.15;
+        const holdEnd = duration * (0.15 + 0.55);
+        
         let alpha;
+        let currentX;
+        let currentY;
+        const outProgress = (elapsed - holdEnd) / (duration - holdEnd);
         if (elapsed <= fadeInEnd) {
             alpha = elapsed / fadeInEnd;
+            currentX = x + (endX - x) * alpha;
+            currentY = y + (endY - y) * alpha;
+        } else if(elapsed <= holdEnd) {
+            alpha = 1;
+            currentX = endX;
+            currentY = endY;
         } else {
-            alpha = 1 - (elapsed - fadeInEnd) / (duration - fadeInEnd);
+            alpha = 1 - outProgress;
+            currentX = endX + (x - endX) * outProgress;
+            currentY = endY + (y - endY) * outProgress;
         }
         alpha = Math.min(1, Math.max(0, alpha));
-
+        
         this.ctx.globalAlpha = alpha;
-        this.ctx.drawImage(flashImage, 0, 0, this.width, this.height);
+        this.ctx.drawImage(
+            flashImage,
+            currentX,
+            currentY,
+            width,
+            height
+        );
         this.ctx.globalAlpha = 1;
     }
 }

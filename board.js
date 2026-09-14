@@ -1,5 +1,7 @@
 const cols = 10;
 const rows = 40;
+const boardWidth = 200;
+const boardHeight = 400;
 const excludeBufferZone = 20;
 const createEmptyGrid = () => {
     const board = Array.from({length: rows}, () => Array(cols).fill(null));

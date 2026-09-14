@@ -139,7 +139,17 @@ function draw() {
     if(lineClearAnimation) {
         const clearAnimationEndTime = lineClearAnimation.startTime + lineClearAnimation.duration;
         const elapsed = timePreviousFrame - lineClearAnimation.startTime;
-        renderer.drawClearFlash(elapsed, lineClearAnimation.duration, lineClearAnimation.selectedImg);
+        renderer.drawClearFlash(
+            elapsed,
+            lineClearAnimation.duration,
+            lineClearAnimation.selectedImg,
+            lineClearAnimation.x,
+            lineClearAnimation.y,
+            lineClearAnimation.endX,
+            lineClearAnimation.endY,
+            lineClearAnimation.drawingWidth,
+            lineClearAnimation.drawingHeight
+        );
         renderer.drawDroppingCellsAfterClear(
             lineClearAnimation.gridSnapshot,
             lineClearAnimation.clearedIndices,
@@ -358,11 +368,22 @@ function moveDown() {
             const randomIndex = Math.floor(Math.random() * levelImgPool.length);
             if(levelImgLoadedPool[randomIndex]) {
                 const selectedImg = levelImgPool[randomIndex];
-
+                const drawingWidth = boardWidth * (2/3);
+                const drawingHeight = boardWidth * (selectedImg.naturalHeight / selectedImg.naturalWidth);
+                const x = Math.random() * boardWidth;
+                const y = Math.random() * boardHeight;
+                const endX = (boardWidth / 2) - (selectedImg.naturalWidth / 2); 
+                const endY = (boardHeight / 2) - (selectedImg.naturalHeight / 2); 
                 lineClearAnimation = {
-                        selectedImg,
-                        clearedIndices,
-                        gridSnapshot: gridBeforeCleared,
+                    selectedImg,
+                    x,
+                    y,
+                    endX,
+                    endY,
+                    drawingWidth,
+                    drawingHeight,
+                    clearedIndices,
+                    gridSnapshot: gridBeforeCleared,
                     patternMap: randomPattern,
                     startTime: clearAnimationStartTime,
                     duration: 800,
@@ -409,9 +430,20 @@ function hardDrop() {
         const randomIndex = Math.floor(Math.random() * levelImgPool.length);
             if(levelImgLoadedPool[randomIndex]) {
                 const selectedImg = levelImgPool[randomIndex];
-        
+                const drawingWidth = boardWidth * (2/3);
+                const drawingHeight = boardWidth * (selectedImg.naturalHeight / selectedImg.naturalWidth);
+                const x = Math.random() * boardWidth;
+                const y = Math.random() * boardHeight;
+                const endX = (boardWidth / 2) - (drawingWidth / 2); 
+                const endY = (boardHeight / 2) - (drawingHeight / 2); 
                 lineClearAnimation = {
                     selectedImg,
+                    x,
+                    y,
+                    endX,
+                    endY,
+                    drawingWidth,
+                    drawingHeight,
                     clearedIndices,
                     gridSnapshot: gridBeforeCleared,
                     patternMap: randomPattern,
