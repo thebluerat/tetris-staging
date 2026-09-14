@@ -6,8 +6,8 @@
 // };
 
 const levelImgSets = [
-    ['ekubo_0', 'ekubo_1', 'ekubo_2', 'ekubo_3', 'ekubo_4', 'ekubo_5', 'ekubo_6', 'ekubo_7', 'ekubo_8'],
-    // ['mob_0']
+    ['img_ekubo_0', 'img_ekubo_1', 'img_ekubo_2', 'img_ekubo_3', 'img_ekubo_4', 'img_ekubo_5', 'img_ekubo_6', 'img_ekubo_7', 'img_ekubo_8'],
+    ['img_mob_0', 'img_mob_1', 'img_mob_2', 'img_mob_3', 'img_mob_4', 'img_mob_5', 'img_mob_6', 'img_mob_7']
 ];
 const gameImgs = [];
 const gameImgsLoaded = [];
@@ -18,7 +18,7 @@ for(const [level, names] of levelImgSets.entries()) {
 
     for(const [index, name] of names.entries()) {
         const img = new Image();
-        img.src = `./img/img_${name}.png`;
+        img.src = `./img/${name}.png`;
 
         gameImgsLoaded[level][index] = img.complete;
         img.onload = () => {
