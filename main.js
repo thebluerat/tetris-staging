@@ -7,7 +7,7 @@
 
 const levelImgSets = [
     ['img_ekubo_0', 'img_ekubo_1', 'img_ekubo_2', 'img_ekubo_3', 'img_ekubo_4', 'img_ekubo_5', 'img_ekubo_6', 'img_ekubo_7', 'img_ekubo_8'],
-    ['img_mob_0', 'img_mob_1', 'img_mob_2', 'img_mob_3', 'img_mob_4', 'img_mob_5', 'img_mob_6', 'img_mob_7']
+    // ['img_mob_0', 'img_mob_1', 'img_mob_2', 'img_mob_3', 'img_mob_4', 'img_mob_5', 'img_mob_6', 'img_mob_7']
 ];
 const gameImgs = [];
 const gameImgsLoaded = [];
