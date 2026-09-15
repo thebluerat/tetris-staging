@@ -320,7 +320,15 @@ function calcDropDistances(clearedIndices, gridSnapshot) {
     }
     return rowDropDistancesMap;
 }
-
+function handlePieceLock(position) {
+        // 블록 고정
+        lockPiece(position, currentPiece);   
+        gridBeforeCleared = structuredClone(grid);
+        // 꽉 찬 줄 삭제
+        const clearAnimationStartTime = timePreviousFrame;
+        const {clearedCount, clearedIndices, randomPattern} = clearRow(position);
+        return {clearedCount, clearedIndices, randomPattern, clearAnimationStartTime};
+}
 function moveDown() {
     if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
     const checkingPieceD = {
@@ -351,12 +359,8 @@ function moveDown() {
             });
             return;
         }
-        // 블록 고정
-        lockPiece(position, currentPiece);   
-        gridBeforeCleared = structuredClone(grid);
-        // 꽉 찬 줄 삭제
-        const clearAnimationStartTime = timePreviousFrame;
-        const {clearedCount, clearedIndices, randomPattern} = clearRow(position);
+        const {clearedCount, clearedIndices, randomPattern, clearAnimationStartTime} = handlePieceLock(position);
+        // 시작
         if(clearedCount !== 0) {
             let dropDistances = calcDropDistances(clearedIndices, gridBeforeCleared);
             const imgLevel = level >= gameImgs.length ? gameImgs.length - 1 : level;
@@ -390,10 +394,13 @@ function moveDown() {
                 }; 
             }
         }
+        // 끝
+        // 시작
         calScoreLineClear(clearedCount);
         levelUp(clearedCount);
         spawnPiece();
         previewDraw();
+        // 끝
     }
 }
 function hardDrop() {
@@ -413,12 +420,10 @@ function hardDrop() {
     calScore(2 * (currentPiece.top - topBeforeHardDrop));
 
     const hardDropPosition = cellsAbsolutePosition(currentPiece);
-    //블록 고정
-    lockPiece(hardDropPosition, currentPiece);
-    gridBeforeCleared = structuredClone(grid);
-    // 꽉 찬 줄 삭제
-    const clearAnimationStartTime = timePreviousFrame;
-    const {clearedCount, clearedIndices, randomPattern} = clearRow(hardDropPosition);
+    // 시작
+    const {clearedCount, clearedIndices, randomPattern, clearAnimationStartTime} = handlePieceLock(hardDropPosition);
+    // 끝
+    // 시작
     if(clearedCount !== 0) {
         let dropDistances = calcDropDistances(clearedIndices, gridBeforeCleared);
         const imgLevel = level >= gameImgs.length ? gameImgs.length - 1 : level;
@@ -452,10 +457,13 @@ function hardDrop() {
                 }; 
             }
         }
+        // 끝
+    // 시작
     calScoreLineClear(clearedCount);
     levelUp(clearedCount);
     spawnPiece();
     previewDraw();
+    // 끝
 }
 
 function resetGame() {
