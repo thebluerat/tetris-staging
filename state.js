@@ -6,7 +6,6 @@ const SCREEN_STATE = {
 }
 
 let state = SCREEN_STATE.START;
-let timeGameOver = 0;
 
 const SCREEN = {
     startScreen: document.getElementById('start_screen'),
@@ -44,7 +43,6 @@ function showScreen(newState) {
         SCREEN.gameoverScreen.classList.remove('active');
         SCREEN.playingScreen.classList.remove('active');
     } else if (newState === SCREEN_STATE.GAMEOVER) {
-        timeGameOver = document.timeline.currentTime;
         SCREEN.gameoverScreen.classList.add('active');
         SCREEN.playingScreen.classList.remove('active');
         SCREEN.startScreen.classList.remove('active');
