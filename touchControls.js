@@ -9,11 +9,11 @@ const btnHardDrop = document.getElementById('btn_hard_drop');
 function bindTap(button, onTap) {
     button.addEventListener('touchstart', (event) => {
         event.preventDefault(); // 더블탭 확대, 클릭 이벤트 중복 발생 방지
-        if(state !== 'PLAYING') return;
+        if(state !== SCREEN_STATE.PLAYING) return;
         onTap();
     });
     button.addEventListener('click', () => {
-        if(state !== 'PLAYING') return;
+        if(state !== SCREEN_STATE.PLAYING) return;
         onTap();
     });
 }

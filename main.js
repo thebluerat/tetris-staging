@@ -129,7 +129,7 @@ function easeInOutCubic(t) {
         : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 function draw() {
-    if(state == 'START' || state == 'GAMEOVER') return;
+    if(state == SCREEN_STATE.START || state == SCREEN_STATE.GAMEOVER) return;
     renderer.clear();
     // 줄 삭제될 때
     if(lineClearAnimation) {
@@ -174,7 +174,7 @@ function draw() {
     });
 }
 function previewDraw() {
-    if(state == 'START' || state == 'GAMEOVER') return;
+    if(state == SCREEN_STATE.START || state == SCREEN_STATE.GAMEOVER) return;
     previewRenderer.clear();
     previewRenderer.drawPreviewPiece({
         cells: q.queue[0].cells,
@@ -205,7 +205,7 @@ function decideDropInterval() {
 
 function dropTimeUpdate(time = 0) {
     decideDropInterval()
-    if(state == 'PLAYING') {
+    if(state == SCREEN_STATE.PLAYING) {
         const deltaTime = time - timePreviousFrame;
         // timePreviousFrame: 매 프레임마다 갱신되는 최근 시각
         timePreviousFrame = time;
@@ -514,7 +514,7 @@ function rotateCCW() {
     rotate(directionDelta, kickTableJLSTZ, kickTableI);
 }
 function startSoftDrop() {
-    if(state !== 'PLAYING') return;
+    if(state !== SCREEN_STATE.PLAYING) return;
     isSoftDropping = true;
     dropTimeCounter = 0;
     draw();
@@ -525,7 +525,7 @@ function stopSoftDrop() {
 }
 
 window.addEventListener('keydown', (event) => {
-    if(state !== 'PLAYING') return; 
+    if(state !== SCREEN_STATE.PLAYING) return; 
     switch (event.code) {
         case "ArrowLeft": moveLeft(); break;
         case "ArrowRight": moveRight(); break;
