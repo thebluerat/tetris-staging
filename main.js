@@ -475,25 +475,25 @@ function moveRight() {
     }
     draw();
 }
-function rotateCW() {
-    const nextDirection = rotationOrder[(rotationOrder.indexOf(currentPiece.direction) + 1) % rotationLength];
-    const checkingPieceCW = {
+function rotate(directionDelta, kickTableJLSTZ, kickTableI) {
+    const nextDirection = rotationOrder[(rotationOrder.indexOf(currentPiece.direction) + directionDelta + rotationLength) % rotationLength];
+    const checkingPiece = {
         ...currentPiece,
         direction: nextDirection,
         cells: RotatedShapes[currentPiece.blockName][nextDirection],
     }
-    const checkingCellsCW = cellsAbsolutePosition(checkingPieceCW);
-    if(isValidPosition(checkingCellsCW) && isEmptySpace(checkingCellsCW, grid)){
+    const checkingCells = cellsAbsolutePosition(checkingPiece);
+    if(isValidPosition(checkingCells) && isEmptySpace(checkingCells, grid)){
         currentPiece.direction = nextDirection;
-        currentPiece.cells = checkingPieceCW.cells;
+        currentPiece.cells = checkingPiece.cells;
     } else {
-        let kickTable = WallKicks_JLSTZ;
-        if(checkingPieceCW.blockName == 'I') kickTable = WallKicks_I;
+        let kickTable = kickTableJLSTZ;
+        if(checkingPiece.blockName == 'I') kickTable = kickTableI;
         for (let i = 0; i < 5; i++) {
             const [deltaLeft, deltaTop] = kickTable[currentPiece.direction][i];
-            const kickedCells = checkingCellsCW.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
+            const kickedCells = checkingCells.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
             if (isValidPosition(kickedCells) && isEmptySpace(kickedCells, grid)) {
-                currentPiece.cells = checkingPieceCW.cells;
+                currentPiece.cells = checkingPiece.cells;
                 currentPiece.direction = nextDirection;
                 currentPiece.left += deltaLeft;
                 currentPiece.top += deltaTop;
@@ -503,33 +503,17 @@ function rotateCW() {
     }
     draw();
 }
+function rotateCW() {
+    let directionDelta = 1;
+    let kickTableJLSTZ = WallKicks_JLSTZ;
+    let kickTableI = WallKicks_I;
+    rotate(directionDelta, kickTableJLSTZ, kickTableI);
+}
 function rotateCCW() {
-    const ACWnextDirection = rotationOrder[((rotationOrder.indexOf(currentPiece.direction) - 1) % rotationLength + 4) % 4];
-    let checkingPieceACW = {
-        ...currentPiece,
-        direction: ACWnextDirection,
-        cells: RotatedShapes[currentPiece.blockName][ACWnextDirection],
-    }
-    const checkingCellsACW = cellsAbsolutePosition(checkingPieceACW);
-    if(isValidPosition(checkingCellsACW) && isEmptySpace(checkingCellsACW, grid)){
-        currentPiece.direction = ACWnextDirection;
-        currentPiece.cells = checkingPieceACW.cells;
-    } else {
-        let kickTable = WallKicks_JLSTZ_ACW;
-        if(checkingPieceACW.blockName == 'I') kickTable = WallKicks_I_ACW;
-        for (let i = 0; i < 5; i++) {
-            const [deltaLeft, deltaTop] = kickTable[currentPiece.direction][i];
-            const kickedCells = checkingCellsACW.map(cell => [cell[0] + deltaLeft, cell[1] + deltaTop]);
-            if (isValidPosition(kickedCells) && isEmptySpace(kickedCells, grid)) {
-                currentPiece.cells = checkingPieceACW.cells;
-                currentPiece.direction = ACWnextDirection;
-                currentPiece.left += deltaLeft;
-                currentPiece.top += deltaTop;
-                break;
-            }
-        }
-    }
-    draw();
+    let directionDelta = -1;
+    let kickTableJLSTZ = WallKicks_JLSTZ_ACW;
+    let kickTableI = WallKicks_I_ACW;
+    rotate(directionDelta, kickTableJLSTZ, kickTableI);
 }
 function startSoftDrop() {
     if(state !== 'PLAYING') return;
