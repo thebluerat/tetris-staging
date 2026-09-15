@@ -369,8 +369,8 @@ function moveDown() {
                 const drawingHeight = boardWidth * (selectedImg.naturalHeight / selectedImg.naturalWidth);
                 const x = Math.random() * boardWidth;
                 const y = Math.random() * boardHeight;
-                const endX = (boardWidth / 2) - (selectedImg.naturalWidth / 2); 
-                const endY = (boardHeight / 2) - (selectedImg.naturalHeight / 2); 
+                const endX = (boardWidth / 2) - (drawingWidth / 2); 
+                const endY = (boardHeight / 2) - (drawingHeight / 2); 
                 lineClearAnimation = {
                     selectedImg,
                     x,
