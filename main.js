@@ -329,6 +329,41 @@ function handlePieceLock(position) {
         const {clearedCount, clearedIndices, randomPattern} = clearRow(position);
         return {clearedCount, clearedIndices, randomPattern, clearAnimationStartTime};
 }
+function configureLineClearAnimation(clearedCount, clearedIndices, randomPattern, clearAnimationStartTime) {
+    if(clearedCount !== 0) {
+        let dropDistances = calcDropDistances(clearedIndices, gridBeforeCleared);
+        const imgLevel = level >= gameImgs.length ? gameImgs.length - 1 : level;
+        const levelImgPool = gameImgs[imgLevel];
+        const levelImgLoadedPool = gameImgsLoaded[imgLevel];
+        const randomIndex = Math.floor(Math.random() * levelImgPool.length);
+        if(levelImgLoadedPool[randomIndex]) {
+            const selectedImg = levelImgPool[randomIndex];
+            const drawingWidth = boardWidth * (2/3);
+            const drawingHeight = boardWidth * (selectedImg.naturalHeight / selectedImg.naturalWidth);
+            const x = Math.random() * boardWidth;
+            const y = Math.random() * boardHeight;
+            const endX = (boardWidth / 2) - (drawingWidth / 2); 
+            const endY = (boardHeight / 2) - (drawingHeight / 2); 
+            lineClearAnimation = {
+                selectedImg,
+                x,
+                y,
+                endX,
+                endY,
+                drawingWidth,
+                drawingHeight,
+                clearedIndices,
+                gridSnapshot: gridBeforeCleared,
+                patternMap: randomPattern,
+                startTime: clearAnimationStartTime,
+                duration: 800,
+                interval: 45,
+                cellDuration: 600,
+                dropDistances,
+            }; 
+        }
+    }
+}
 function moveDown() {
     if(state === SCREEN_STATE.PAUSED || state === SCREEN_STATE.GAMEOVER) return;
     const checkingPieceD = {
@@ -360,47 +395,12 @@ function moveDown() {
             return;
         }
         const {clearedCount, clearedIndices, randomPattern, clearAnimationStartTime} = handlePieceLock(position);
-        // 시작
-        if(clearedCount !== 0) {
-            let dropDistances = calcDropDistances(clearedIndices, gridBeforeCleared);
-            const imgLevel = level >= gameImgs.length ? gameImgs.length - 1 : level;
-            const levelImgPool = gameImgs[imgLevel];
-            const levelImgLoadedPool = gameImgsLoaded[imgLevel];
-            const randomIndex = Math.floor(Math.random() * levelImgPool.length);
-            if(levelImgLoadedPool[randomIndex]) {
-                const selectedImg = levelImgPool[randomIndex];
-                const drawingWidth = boardWidth * (2/3);
-                const drawingHeight = boardWidth * (selectedImg.naturalHeight / selectedImg.naturalWidth);
-                const x = Math.random() * boardWidth;
-                const y = Math.random() * boardHeight;
-                const endX = (boardWidth / 2) - (drawingWidth / 2); 
-                const endY = (boardHeight / 2) - (drawingHeight / 2); 
-                lineClearAnimation = {
-                    selectedImg,
-                    x,
-                    y,
-                    endX,
-                    endY,
-                    drawingWidth,
-                    drawingHeight,
-                    clearedIndices,
-                    gridSnapshot: gridBeforeCleared,
-                    patternMap: randomPattern,
-                    startTime: clearAnimationStartTime,
-                    duration: 800,
-                    interval: 45,
-                    cellDuration: 600,
-                    dropDistances,
-                }; 
-            }
-        }
-        // 끝
-        // 시작
+        configureLineClearAnimation(clearedCount, clearedIndices, randomPattern, clearAnimationStartTime);
+        
         calScoreLineClear(clearedCount);
         levelUp(clearedCount);
         spawnPiece();
         previewDraw();
-        // 끝
     }
 }
 function hardDrop() {
@@ -420,50 +420,13 @@ function hardDrop() {
     calScore(2 * (currentPiece.top - topBeforeHardDrop));
 
     const hardDropPosition = cellsAbsolutePosition(currentPiece);
-    // 시작
     const {clearedCount, clearedIndices, randomPattern, clearAnimationStartTime} = handlePieceLock(hardDropPosition);
-    // 끝
-    // 시작
-    if(clearedCount !== 0) {
-        let dropDistances = calcDropDistances(clearedIndices, gridBeforeCleared);
-        const imgLevel = level >= gameImgs.length ? gameImgs.length - 1 : level;
-        const levelImgPool = gameImgs[imgLevel];
-        const levelImgLoadedPool = gameImgsLoaded[imgLevel];
-        const randomIndex = Math.floor(Math.random() * levelImgPool.length);
-            if(levelImgLoadedPool[randomIndex]) {
-                const selectedImg = levelImgPool[randomIndex];
-                const drawingWidth = boardWidth * (2/3);
-                const drawingHeight = boardWidth * (selectedImg.naturalHeight / selectedImg.naturalWidth);
-                const x = Math.random() * boardWidth;
-                const y = Math.random() * boardHeight;
-                const endX = (boardWidth / 2) - (drawingWidth / 2); 
-                const endY = (boardHeight / 2) - (drawingHeight / 2); 
-                lineClearAnimation = {
-                    selectedImg,
-                    x,
-                    y,
-                    endX,
-                    endY,
-                    drawingWidth,
-                    drawingHeight,
-                    clearedIndices,
-                    gridSnapshot: gridBeforeCleared,
-                    patternMap: randomPattern,
-                    startTime: clearAnimationStartTime,
-                    duration: 800,
-                    interval: 45,
-                    cellDuration: 600,
-                    dropDistances,
-                }; 
-            }
-        }
-        // 끝
-    // 시작
+    configureLineClearAnimation(clearedCount, clearedIndices, randomPattern, clearAnimationStartTime);
+    
     calScoreLineClear(clearedCount);
     levelUp(clearedCount);
     spawnPiece();
     previewDraw();
-    // 끝
 }
 
 function resetGame() {
