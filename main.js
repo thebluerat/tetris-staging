@@ -46,7 +46,6 @@ const finalScoreDisplay = document.getElementById('final_score');
 
 let elapsedTime = 0;
 let gameoverEnteredTime = 0;
-let totalPlayTime = 0;
 let score = 0;
 let level = 0;
 let finalScore = 0;
@@ -441,7 +440,6 @@ function resetGame() {
     calScore(0);
     elapsedTime = 0;
     gameoverEnteredTime = 0;
-    totalPlayTime = 0;
     timePreviousFrame = 0;
     dropInterval = 1000;
     dropTimeCounter = 0;
